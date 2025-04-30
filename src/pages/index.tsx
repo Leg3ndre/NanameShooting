@@ -1,21 +1,19 @@
 import * as THREE from 'three';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 const Home = () => {
   const width = 640;
   const height = 480;
 
-  let canvas;
   useEffect(() => {
-    if (canvas) return;
-    canvas = document.getElementById('game')!;
-
-    const renderer = new THREE.WebGLRenderer({ canvas: canvas });
+    const renderer = new THREE.WebGLRenderer({
+      canvas: document.getElementById('game')!
+    });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
 
     const camera = new THREE.PerspectiveCamera(45, width / height);
-    camera.position.set(0, -800, 800);
+    camera.position.set(0, 0, 1000);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const scene = new THREE.Scene();
@@ -24,7 +22,15 @@ const Home = () => {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    renderer.render(scene, camera);
+    const tick = () => {
+      console.log('tick!');
+      mesh.rotation.x += 0.1;
+      mesh.rotation.y += 0.1;
+      renderer.render(scene, camera);
+      requestAnimationFrame(tick);
+    }
+
+    tick();
   }, []);
 
   return (
