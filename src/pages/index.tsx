@@ -1,4 +1,3 @@
-// import styles from './page.module.css';
 import * as THREE from 'three';
 
 const Home = () => {
