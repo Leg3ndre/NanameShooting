@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import { useEffect } from 'react';
-import styles from './index.module.css'
+import animate from './Animate';
+import styles from './index.module.css';
 
 type Props = {
   width: number;
@@ -8,9 +9,6 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height }: Props) => {
-  const FPS = 60;
-  let prevTime = 0;
-
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
@@ -28,22 +26,11 @@ const GameCanvas = ({ width, height }: Props) => {
     const mesh = new THREE.Mesh(geometry, material);
     scene.add(mesh);
 
-    const tick = () => {
-      const currentTime = Date.now();
-
-      if (currentTime - prevTime > 1000.0 / FPS) {
-        console.log('tick!', currentTime - prevTime);
-
-        prevTime = currentTime;
-        mesh.rotation.x += 0.1;
-        mesh.rotation.y += 0.1;
-        renderer.render(scene, camera);
-      }
-
-      requestAnimationFrame(tick);
-    }
-
-    tick();
+    animate(() => {
+      mesh.rotation.x += 0.1;
+      mesh.rotation.y += 0.1;
+      renderer.render(scene, camera);
+    });
   }, []);
 
   return (
