@@ -4,6 +4,8 @@ import { useEffect, useState } from 'react';
 const Home = () => {
   const width = 640;
   const height = 480;
+  const FPS = 60;
+  let prevTime = 0;
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
@@ -23,10 +25,17 @@ const Home = () => {
     scene.add(mesh);
 
     const tick = () => {
-      console.log('tick!');
-      mesh.rotation.x += 0.1;
-      mesh.rotation.y += 0.1;
-      renderer.render(scene, camera);
+      const currentTime = Date.now();
+
+      if (currentTime - prevTime > 1000.0 / FPS) {
+        console.log('tick!', currentTime - prevTime);
+
+        prevTime = currentTime;
+        mesh.rotation.x += 0.1;
+        mesh.rotation.y += 0.1;
+        renderer.render(scene, camera);
+      }
+
       requestAnimationFrame(tick);
     }
 
