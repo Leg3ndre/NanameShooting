@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { useEffect } from 'react';
 import animate from './Animate';
-import fieldLineEdges from './Field';
+import fieldLines from './Field';
 import styles from './index.module.css';
 
 type Props = {
@@ -22,15 +22,9 @@ const GameCanvas = ({ width, height }: Props) => {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const scene = new THREE.Scene();
-    const material = new THREE.LineBasicMaterial({ color: 0xffffff });
-    const edges = fieldLineEdges();
-    for (let edge of edges) {
-      let geometry = new THREE.BufferGeometry();
-      geometry.setFromPoints([
-        new THREE.Vector3(edge[0][0], edge[0][1], edge[0][2]),
-        new THREE.Vector3(edge[1][0], edge[1][1], edge[1][2]),
-      ]);
-      scene.add(new THREE.Line(geometry, material));
+    const lines = fieldLines();
+    for (let line of lines) {
+      scene.add(line);
     }
 
     animate(() => {

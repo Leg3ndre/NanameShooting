@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 const fieldLineEdges = () => {
   const WIDTH = 400;
   const HEIGHT = 400;
@@ -20,4 +22,17 @@ const fieldLineEdges = () => {
   return edges;
 }
 
-export default fieldLineEdges;
+const fieldLines = () => {
+  const material = new THREE.LineBasicMaterial({ color: 0xffffff });
+  const edges = fieldLineEdges();
+  return edges.map((edge) => {
+    let geometry = new THREE.BufferGeometry();
+    geometry.setFromPoints([
+      new THREE.Vector3(edge[0][0], edge[0][1], edge[0][2]),
+      new THREE.Vector3(edge[1][0], edge[1][1], edge[1][2]),
+    ]);
+    return new THREE.Line(geometry, material);
+  });
+}
+
+export default fieldLines;
