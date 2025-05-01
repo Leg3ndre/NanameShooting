@@ -19,11 +19,9 @@ class Field {
 
   tick() {
     this.count += this.VELOCITY;
-    for (let i = 0; i <= 2 * this.SIGHT_RANGE / this.MESH_SIZE; ++i) {
-      this.wLines[i].geometry.setFromPoints([
-        new THREE.Vector3(this.MESH_SIZE * i - this.SIGHT_RANGE - this.count, -this.WIDTH, -this.HEIGHT),
-        new THREE.Vector3(this.MESH_SIZE * i - this.SIGHT_RANGE - this.count, this.WIDTH, -this.HEIGHT),
-      ]);
+
+    for (let [i, line] of this.wLines.entries()) {
+      line.geometry.setFromPoints(this.buildWLineEdges(i));
     }
   }
 
@@ -35,10 +33,7 @@ class Field {
     let lines = [];
     for (let i = 0; i <= 2 * this.WIDTH / this.MESH_SIZE; ++i) {
       let geometry = new THREE.BufferGeometry();
-      geometry.setFromPoints([
-        new THREE.Vector3(-this.SIGHT_RANGE, this.MESH_SIZE * i - this.WIDTH, -this.HEIGHT),
-        new THREE.Vector3(this.SIGHT_RANGE, this.MESH_SIZE * i - this.WIDTH, -this.HEIGHT),
-      ]);
+      geometry.setFromPoints(this.buildSLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
     }
     return lines;
@@ -48,13 +43,29 @@ class Field {
     let lines = [];
     for (let i = 0; i <= 2 * this.SIGHT_RANGE / this.MESH_SIZE; ++i) {
       let geometry = new THREE.BufferGeometry();
-      geometry.setFromPoints([
-        new THREE.Vector3(this.MESH_SIZE * i - this.SIGHT_RANGE, -this.WIDTH, -this.HEIGHT),
-        new THREE.Vector3(this.MESH_SIZE * i - this.SIGHT_RANGE, this.WIDTH, -this.HEIGHT),
-      ]);
+      geometry.setFromPoints(this.buildWLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
     }
     return lines;
+  }
+
+  private buildSLineEdges(i: number) {
+    const y = this.MESH_SIZE * i - this.WIDTH;
+    const z = -this.HEIGHT;
+    return [
+      new THREE.Vector3(-this.SIGHT_RANGE, y, z),
+      new THREE.Vector3(this.SIGHT_RANGE, y, z),
+    ];
+  }
+
+  private buildWLineEdges(i: number) {
+    const x = this.MESH_SIZE * i - this.SIGHT_RANGE;
+    const diffX = this.count % this.MESH_SIZE;
+    const z = -this.HEIGHT;
+    return [
+      new THREE.Vector3(x - diffX, -this.WIDTH, z),
+      new THREE.Vector3(x - diffX, this.WIDTH, z),
+    ];
   }
 }
 
