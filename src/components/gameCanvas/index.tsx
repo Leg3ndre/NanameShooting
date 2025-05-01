@@ -1,7 +1,7 @@
 import * as THREE from 'three';
 import { useEffect } from 'react';
 import animate from './Animate';
-import fieldLines from './Field';
+import Field from './Field';
 import styles from './index.module.css';
 
 type Props = {
@@ -10,6 +10,8 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height }: Props) => {
+  const field = new Field;
+
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
@@ -22,12 +24,12 @@ const GameCanvas = ({ width, height }: Props) => {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const scene = new THREE.Scene();
-    const lines = fieldLines();
-    for (let line of lines) {
+    for (let line of field.getLines()) {
       scene.add(line);
     }
 
     animate(() => {
+      field.tick();
       renderer.render(scene, camera);
     });
   }, []);
