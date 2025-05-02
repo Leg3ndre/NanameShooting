@@ -6,7 +6,7 @@ const animate = (callback: Function) => {
     const currentTime = Date.now();
 
     if (currentTime - prevTime > 1000.0 / FPS) {
-      console.log('tick!', currentTime - prevTime);
+      // console.log('tick!', currentTime - prevTime);
       prevTime = currentTime;
 
       callback();

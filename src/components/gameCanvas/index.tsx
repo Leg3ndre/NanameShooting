@@ -13,6 +13,7 @@ type Props = {
 const GameCanvas = ({ width, height }: Props) => {
   const field = new Field;
   const player = new Player;
+  let keysPressed: { [index: string]: boolean } = {};
 
   useEffect(() => {
     const renderer = buildRenderer(document.getElementById('game')!);
@@ -43,6 +44,24 @@ const GameCanvas = ({ width, height }: Props) => {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
     return renderer;
+  }
+
+  useEffect(() => {
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('keyup', handleKeyUp);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('keyup', handleKeyUp);
+    }
+  }, []);
+
+  const handleKeyDown = (e: KeyboardEvent) => {
+    keysPressed[e.key] = true;
+  }
+
+  const handleKeyUp = (e: KeyboardEvent) => {
+    delete keysPressed[e.key];
   }
 
   return (
