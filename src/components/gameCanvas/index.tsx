@@ -15,15 +15,8 @@ const GameCanvas = ({ width, height }: Props) => {
   const player = new Player;
 
   useEffect(() => {
-    const renderer = new THREE.WebGLRenderer({
-      canvas: document.getElementById('game')!
-    });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(width, height);
-
-    const camera = new THREE.PerspectiveCamera(45, width / height);
-    camera.position.set(0, -800, 800);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    const renderer = buildRenderer(document.getElementById('game')!);
+    const camera = buildCamera();
 
     const scene = new THREE.Scene();
     scene.add(field.getGraphics());
@@ -35,6 +28,22 @@ const GameCanvas = ({ width, height }: Props) => {
       renderer.render(scene, camera);
     });
   }, []);
+
+  const buildCamera = () => {
+    const camera = new THREE.PerspectiveCamera(45, width / height);
+    camera.position.set(0, -800, 800);
+    camera.lookAt(new THREE.Vector3(0, 0, 0));
+    return camera;
+  }
+
+  const buildRenderer = (canvasDom: HTMLElement) => {
+    const renderer = new THREE.WebGLRenderer({
+      canvas: canvasDom
+    });
+    renderer.setPixelRatio(window.devicePixelRatio);
+    renderer.setSize(width, height);
+    return renderer;
+  }
 
   return (
     <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
