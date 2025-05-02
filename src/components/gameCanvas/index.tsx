@@ -4,6 +4,7 @@ import animate from './Animate';
 import Field from './Field';
 import styles from './index.module.css';
 import Player from './Player';
+import Keyboard from './keyboard';
 
 type Props = {
   width: number;
@@ -46,26 +47,11 @@ const GameCanvas = ({ width, height }: Props) => {
     return renderer;
   }
 
-  useEffect(() => {
-    document.addEventListener('keydown', handleKeyDown);
-    document.addEventListener('keyup', handleKeyUp);
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-      document.removeEventListener('keyup', handleKeyUp);
-    }
-  }, []);
-
-  const handleKeyDown = (e: KeyboardEvent) => {
-    keysPressed[e.key] = true;
-  }
-
-  const handleKeyUp = (e: KeyboardEvent) => {
-    delete keysPressed[e.key];
-  }
-
   return (
-    <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
+    <>
+      <Keyboard keysPressed={keysPressed} />
+      <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
+    </>
   );
 }
 
