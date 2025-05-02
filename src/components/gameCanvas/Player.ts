@@ -8,6 +8,10 @@ class Player {
     this.graphics = this.buildGraphics();
   }
 
+  tick() {
+    this.graphics.position.z += 1;
+  }
+
   getGraphics() {
     return this.graphics;
   }

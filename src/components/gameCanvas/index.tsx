@@ -31,6 +31,7 @@ const GameCanvas = ({ width, height }: Props) => {
 
     animate(() => {
       field.tick();
+      player.tick();
       renderer.render(scene, camera);
     });
   }, []);
