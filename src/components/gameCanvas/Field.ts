@@ -6,11 +6,11 @@ const HEIGHT = CONST.HEIGHT;
 const SIGHT_RANGE = CONST.SIGHT_RANGE;
 
 class Field {
-  MESH_SIZE = 40;
+  MESH_SIZE = 50;
   VELOCITY = 3;
 
   count = 0;
-  material = new THREE.LineBasicMaterial({ color: 0xffffff });
+  material = new THREE.LineBasicMaterial({ color: 0xc0d0e0 });
   graphics;
   sLines;
   wLines;
