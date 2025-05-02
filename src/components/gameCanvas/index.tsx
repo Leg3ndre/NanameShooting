@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import animate from './Animate';
 import Field from './Field';
 import styles from './index.module.css';
+import Player from './Player';
 
 type Props = {
   width: number;
@@ -11,6 +12,7 @@ type Props = {
 
 const GameCanvas = ({ width, height }: Props) => {
   const field = new Field;
+  const player = new Player;
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
@@ -26,6 +28,9 @@ const GameCanvas = ({ width, height }: Props) => {
     const scene = new THREE.Scene();
     for (let line of field.getLines()) {
       scene.add(line);
+    }
+    for (let mesh of player.getMeshes()) {
+      scene.add(mesh);
     }
 
     animate(() => {
