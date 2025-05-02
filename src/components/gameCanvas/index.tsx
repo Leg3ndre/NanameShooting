@@ -12,9 +12,9 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height }: Props) => {
+  let keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
-  let keysPressed: { [index: string]: boolean } = {};
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
@@ -23,8 +23,8 @@ const GameCanvas = ({ width, height }: Props) => {
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
 
-    const camera = new THREE.PerspectiveCamera(45, width / height);
-    camera.position.set(0, -800, 800);
+    const camera = new THREE.PerspectiveCamera(75, width / height);
+    camera.position.set(0, -600, 600);
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const scene = new THREE.Scene();
@@ -33,7 +33,7 @@ const GameCanvas = ({ width, height }: Props) => {
 
     animate(() => {
       field.tick();
-      player.tick();
+      player.tick(keysPressed);
       renderer.render(scene, camera);
     });
   }, []);

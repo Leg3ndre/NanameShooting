@@ -1,6 +1,13 @@
 import * as THREE from 'three';
+import * as CONST from './Const'
+
+const WIDTH = CONST.WIDTH;
+const HEIGHT = CONST.HEIGHT;
+const SIGHT_RANGE = CONST.SIGHT_RANGE;
 
 class Player {
+  VELOCITY = 8;
+
   material = new THREE.LineBasicMaterial({ color: 0xff0000 });
   graphics;
 
@@ -8,8 +15,28 @@ class Player {
     this.graphics = this.buildGraphics();
   }
 
-  tick() {
-    this.graphics.position.z += 1;
+  tick(keysPressed: { [index: string]: boolean }) {
+    // 上下 (z-direction)
+    if (keysPressed['w'] || keysPressed['ArrowUp']) {
+      this.graphics.position.z = Math.min(this.graphics.position.z + this.VELOCITY, HEIGHT);
+    }
+    if (keysPressed['s'] || keysPressed['ArrowDown']) {
+      this.graphics.position.z = Math.max(this.graphics.position.z - this.VELOCITY, -HEIGHT);
+    }
+    // 左右 (y-direction)
+    if (keysPressed['a'] || keysPressed['ArrowLeft']) {
+      this.graphics.position.y = Math.min(this.graphics.position.y + this.VELOCITY, WIDTH);
+    }
+    if (keysPressed['d'] || keysPressed['ArrowRight']) {
+      this.graphics.position.y = Math.max(this.graphics.position.y - this.VELOCITY, -WIDTH);
+    }
+    // 前後 (x-direction)
+    if (keysPressed['e'] || keysPressed['z']) {
+      this.graphics.position.x = Math.min(this.graphics.position.x + this.VELOCITY, SIGHT_RANGE);
+    }
+    if (keysPressed['x'] || keysPressed['Shift']) {
+      this.graphics.position.x = Math.max(this.graphics.position.x - this.VELOCITY, -SIGHT_RANGE);
+    }
   }
 
   getGraphics() {

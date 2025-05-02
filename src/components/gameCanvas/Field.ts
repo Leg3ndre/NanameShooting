@@ -1,9 +1,11 @@
 import * as THREE from 'three';
+import * as CONST from './Const';
+
+const WIDTH = CONST.WIDTH;
+const HEIGHT = CONST.HEIGHT;
+const SIGHT_RANGE = CONST.SIGHT_RANGE;
 
 class Field {
-  WIDTH = 400;
-  HEIGHT = 400;
-  SIGHT_RANGE = 800;
   MESH_SIZE = 40;
   VELOCITY = 3;
 
@@ -44,7 +46,7 @@ class Field {
 
   private buildSLines() {
     let lines = [];
-    for (let i = 0; i <= 2 * this.WIDTH / this.MESH_SIZE; ++i) {
+    for (let i = 0; i <= 2 * WIDTH / this.MESH_SIZE; ++i) {
       let geometry = new THREE.BufferGeometry();
       geometry.setFromPoints(this.buildSLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
@@ -54,7 +56,7 @@ class Field {
 
   private buildWLines() {
     let lines = [];
-    for (let i = 0; i <= 2 * this.SIGHT_RANGE / this.MESH_SIZE; ++i) {
+    for (let i = 0; i <= 2 * SIGHT_RANGE / this.MESH_SIZE; ++i) {
       let geometry = new THREE.BufferGeometry();
       geometry.setFromPoints(this.buildWLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
@@ -63,21 +65,21 @@ class Field {
   }
 
   private buildSLineEdges(i: number) {
-    const y = this.MESH_SIZE * i - this.WIDTH;
-    const z = -this.HEIGHT;
+    const y = this.MESH_SIZE * i - WIDTH;
+    const z = -HEIGHT;
     return [
-      new THREE.Vector3(-this.SIGHT_RANGE, y, z),
-      new THREE.Vector3(this.SIGHT_RANGE, y, z),
+      new THREE.Vector3(-SIGHT_RANGE, y, z),
+      new THREE.Vector3(SIGHT_RANGE, y, z),
     ];
   }
 
   private buildWLineEdges(i: number) {
-    const x = this.MESH_SIZE * i - this.SIGHT_RANGE;
+    const x = this.MESH_SIZE * i - SIGHT_RANGE;
     const diffX = this.count % this.MESH_SIZE;
-    const z = -this.HEIGHT;
+    const z = -HEIGHT;
     return [
-      new THREE.Vector3(x - diffX, -this.WIDTH, z),
-      new THREE.Vector3(x - diffX, this.WIDTH, z),
+      new THREE.Vector3(x - diffX, -WIDTH, z),
+      new THREE.Vector3(x - diffX, WIDTH, z),
     ];
   }
 }
