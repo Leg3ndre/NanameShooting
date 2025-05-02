@@ -26,12 +26,8 @@ const GameCanvas = ({ width, height }: Props) => {
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
     const scene = new THREE.Scene();
-    for (let line of field.getLines()) {
-      scene.add(line);
-    }
-    for (let mesh of player.getMeshes()) {
-      scene.add(mesh);
-    }
+    scene.add(field.getGraphics());
+    scene.add(player.getGraphics());
 
     animate(() => {
       field.tick();

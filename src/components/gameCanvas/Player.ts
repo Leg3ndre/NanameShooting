@@ -2,12 +2,21 @@ import * as THREE from 'three';
 
 class Player {
   material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+  graphics;
 
-  getMeshes() {
-    let meshes = [];
-    meshes.push(this.buildWing());
-    meshes.push(this.buildBody());
-    return meshes;
+  constructor() {
+    this.graphics = this.buildGraphics();
+  }
+
+  getGraphics() {
+    return this.graphics;
+  }
+
+  private buildGraphics() {
+    const group = new THREE.Group();
+    group.add(this.buildWing());
+    group.add(this.buildBody());
+    return group;
   }
 
   buildWing() {

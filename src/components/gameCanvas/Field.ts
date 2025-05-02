@@ -9,12 +9,14 @@ class Field {
 
   count = 0;
   material = new THREE.LineBasicMaterial({ color: 0xffffff });
+  graphics;
   sLines;
   wLines;
 
   constructor() {
     this.sLines = this.buildSLines();
     this.wLines = this.buildWLines();
+    this.graphics = this.buildGraphics();
   }
 
   tick() {
@@ -25,8 +27,19 @@ class Field {
     }
   }
 
-  getLines() {
-    return this.sLines.concat(this.wLines);
+  getGraphics() {
+    return this.graphics;
+  }
+
+  private buildGraphics() {
+    const group = new THREE.Group();
+    for (const line of this.wLines) {
+      group.add(line);
+    }
+    for (const line of this.sLines) {
+      group.add(line);
+    }
+    return group;
   }
 
   private buildSLines() {
