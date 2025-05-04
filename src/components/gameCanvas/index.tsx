@@ -1,11 +1,11 @@
 import * as THREE from 'three';
 import { useEffect } from 'react';
-import animate from './Animate';
-import Field from './Field';
 import styles from './index.module.css';
-import Player from './Player';
-import Keyboard from './keyboard';
-import EnemyBase from './Enemy/Base';
+import Keyboard from '../ui/keyboard';
+import animate from '../../gameLogic/animate';
+import Field from '../../gameLogic/field';
+import Player from '../../gameLogic/player';
+import EnemyBase from '../../gameLogic/enemy/base';
 
 type Props = {
   width: number;

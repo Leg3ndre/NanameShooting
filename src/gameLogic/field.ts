@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as CONST from './Const';
+import * as CONST from '../constants/game';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
