@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game';
 
 const MAX_X = CONST.SIGHT_RANGE;
+const MIN_X = -CONST.SIGHT_RANGE;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 
@@ -9,15 +10,18 @@ export interface IEnemy {
   radius: number;
   velocity: number;
   position: { [index: string]: number };
+  isAlive: boolean;
 
   tick(): void;
   getGraphics(): THREE.Mesh;
+  dispose(): void;
 }
 
 class EnemyBase implements IEnemy {
   radius = 40;
   velocity = 4;
   position;
+  isAlive = true;
 
   private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
   private graphics;
@@ -32,12 +36,14 @@ class EnemyBase implements IEnemy {
     Object.assign(this.graphics.position, this.position);
   }
 
-  tick() {
+  tick(): void {
     this.position.x -= this.velocity;
     Object.assign(this.graphics.position, this.position);
+
+    if (this.position.x < MIN_X) this.isAlive = false;
   }
 
-  getGraphics() {
+  getGraphics(): THREE.Mesh {
     return this.graphics;
   }
 
@@ -48,6 +54,11 @@ class EnemyBase implements IEnemy {
     mesh.rotation.z = -Math.PI / 4;
     mesh.rotation.y = -Math.PI / 3;
     return mesh;
+  }
+
+  dispose(): void {
+    this.graphics.material.dispose();
+    this.graphics.geometry.dispose();
   }
 }
 

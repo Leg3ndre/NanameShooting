@@ -4,8 +4,8 @@ import EnemyBase from './enemy/base';
 
 class EnemyManager {
   hasNewEnemy = false;
+  list: IEnemy[] = [];
 
-  readonly list: IEnemy[] = [];
   private count = 0;
 
   constructor() { }
@@ -41,6 +41,12 @@ class EnemyManager {
 
   lastEnemy(): IEnemy {
     return this.list.slice(-1)[0];
+  }
+
+  popDeadEnemies(): IEnemy[] {
+    const deadEnemies = this.list.filter((e) => !e.isAlive);
+    this.list = this.list.filter((e) => e.isAlive);
+    return deadEnemies;
   }
 }
 
