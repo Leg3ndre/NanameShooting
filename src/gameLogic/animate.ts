@@ -1,5 +1,7 @@
+import * as CONST from '@/constants/game';
+
 const animate = (callback: Function) => {
-  const FPS = 60;
+  const FPS = CONST.FPS;
   let prevTime = 0;
 
   const tick = () => {

@@ -1,15 +1,18 @@
 import * as THREE from 'three';
 import * as CONST from '../constants/game'
 import { IEnemy } from './enemy/base';
+import { mx_bilerp_0 } from 'three/src/nodes/materialx/lib/mx_noise.js';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
 const SIGHT_RANGE = CONST.SIGHT_RANGE;
+const MAX_I_FRAME = 0.5 * CONST.FPS;
 
 class Player {
+  radius = 15;
   velocity = 8;
   position: { [index: string]: number };
-  radius = 15;
+  private restIFrame = 0; // invincibility frame
 
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
   private materialAttacked = new THREE.LineBasicMaterial({ color: 0xffffff });
@@ -32,6 +35,7 @@ class Player {
     Object.assign(this.graphics.position, this.position);
 
     this.processCollision(enemyList);
+    if (this.isInvincible()) this.restIFrame--;
   }
 
   private updatePosition(keysPressed: { [index: string]: boolean }) {
@@ -59,13 +63,17 @@ class Player {
   }
 
   private processCollision(enemyList: IEnemy[]) {
-    for (let mesh of this.graphics.children) {
-      (mesh as THREE.Line).material = this.material;
+    if (!this.isInvincible() && this.detectCollistion(enemyList)) {
+      // get damaged
+      this.restIFrame = MAX_I_FRAME;
     }
-    if (!this.detectCollistion(enemyList)) return;
 
     for (let mesh of this.graphics.children) {
-      (mesh as THREE.Line).material = this.materialAttacked;
+      if (this.isInvincible()) {
+        (mesh as THREE.Line).material = this.materialAttacked;
+      } else {
+        (mesh as THREE.Line).material = this.material;
+      }
     }
   }
 
@@ -81,6 +89,10 @@ class Player {
       }
     }
     return false;
+  }
+
+  private isInvincible() {
+    return (this.restIFrame > 0);
   }
 
   getGraphics(): THREE.Group {
