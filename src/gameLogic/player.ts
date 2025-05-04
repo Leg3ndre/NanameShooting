@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as CONST from '../constants/game'
+import { IEnemy } from './enemy/base';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -8,8 +9,10 @@ const SIGHT_RANGE = CONST.SIGHT_RANGE;
 class Player {
   velocity = 8;
   position: { [index: string]: number };
+  radius = 15;
 
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+  private materialAttacked = new THREE.LineBasicMaterial({ color: 0xffffff });
   private graphics;
 
   constructor() {
@@ -21,9 +24,14 @@ class Player {
     this.graphics = this.buildGraphics();
   }
 
-  tick(keysPressed: { [index: string]: boolean }) {
+  tick(
+    keysPressed: { [index: string]: boolean },
+    enemyList: IEnemy[],
+  ): void {
     this.updatePosition(keysPressed);
     Object.assign(this.graphics.position, this.position);
+
+    this.processCollision(enemyList);
   }
 
   private updatePosition(keysPressed: { [index: string]: boolean }) {
@@ -50,7 +58,32 @@ class Player {
     }
   }
 
-  getGraphics() {
+  private processCollision(enemyList: IEnemy[]) {
+    for (let mesh of this.graphics.children) {
+      (mesh as THREE.Line).material = this.material;
+    }
+    if (!this.detectCollistion(enemyList)) return;
+
+    for (let mesh of this.graphics.children) {
+      (mesh as THREE.Line).material = this.materialAttacked;
+    }
+  }
+
+  detectCollistion(enemyList: IEnemy[]): boolean {
+    for (const enemy of enemyList) {
+      const radius = this.radius + enemy.radius;
+      if (
+        Math.abs(this.position.x - enemy.position.x) < radius
+        && Math.abs(this.position.y - enemy.position.y) < radius
+        && Math.abs(this.position.z - enemy.position.z) < radius
+      ) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  getGraphics(): THREE.Group {
     return this.graphics;
   }
 

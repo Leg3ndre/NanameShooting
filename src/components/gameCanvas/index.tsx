@@ -41,7 +41,7 @@ const GameCanvas = ({ width, height }: Props) => {
 
     animate(() => {
       field.tick();
-      player.tick(keysPressed);
+      player.tick(keysPressed, enemies.list);
       enemies.tick();
       renderer.render(scene, camera);
     });
