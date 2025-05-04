@@ -10,7 +10,7 @@ class EnemyManager {
 
   constructor() { }
 
-  tick() {
+  tick(): void {
     if (this.hasNewEnemy) this.hasNewEnemy = false;
 
     this.count++;
@@ -33,11 +33,14 @@ class EnemyManager {
     }
   }
 
-  generate() {
+  generate(): void {
     this.hasNewEnemy = true;
     const newEnemy = new EnemyBase;
     this.list.push(newEnemy);
-    return newEnemy;
+  }
+
+  lastEnemy(): IEnemy {
+    return this.list.slice(-1)[0];
   }
 }
 

@@ -42,7 +42,7 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
       player.tick(keysPressed, enemies.list);
       playerLife(player.life);
       enemies.tick();
-      if (enemies.hasNewEnemy) scene.add(enemies.list.slice(-1)[0].getGraphics());
+      if (enemies.hasNewEnemy) scene.add(enemies.lastEnemy().getGraphics());
       renderer.render(scene, camera);
     });
   }, []);
