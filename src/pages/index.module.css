@@ -1,0 +1,15 @@
+.scores{
+  width:640px;
+}
+
+.pl_score en_score{
+  color:black;
+  /* background-color:white; */
+  display:inline-block;
+}
+.pl_score{
+  float:left;
+}
+.en_score{
+  float:right;
+}

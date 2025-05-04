@@ -12,6 +12,7 @@ class Player {
   radius = 15;
   velocity = 8;
   position: { [index: string]: number };
+  life = CONST.INITIAL_PLAYER_LIFE;
   private restIFrame = 0; // invincibility frame
 
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
@@ -64,7 +65,7 @@ class Player {
 
   private processCollision(enemyList: IEnemy[]) {
     if (!this.isInvincible() && this.detectCollistion(enemyList)) {
-      // get damaged
+      this.life--;
       this.restIFrame = MAX_I_FRAME;
     }
 
