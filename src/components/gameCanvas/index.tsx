@@ -31,14 +31,13 @@ const GameCanvas = ({ width, height }: Props) => {
 
     const light = new THREE.HemisphereLight(0xffffff, 0x606060, 5.0);
 
-    enemies.generate();
     const scene = new THREE.Scene();
     scene.add(light);
     scene.add(field.getGraphics());
-    for (let enemy of enemies.list) {
-      scene.add(enemy.getGraphics());
-    }
     scene.add(player.getGraphics());
+
+    const enemy = enemies.generate();
+    scene.add(enemy.getGraphics());
 
     animate(() => {
       field.tick();

@@ -13,7 +13,9 @@ class EnemyManager {
   }
 
   generate() {
-    this.list.push(new EnemyBase);
+    const newEnemy = new EnemyBase;
+    this.list.push(newEnemy);
+    return newEnemy;
   }
 }
 
