@@ -37,14 +37,12 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
     scene.add(field.getGraphics());
     scene.add(player.getGraphics());
 
-    const enemy = enemies.generate();
-    scene.add(enemy.getGraphics());
-
     animate(() => {
       field.tick();
       player.tick(keysPressed, enemies.list);
       playerLife(player.life);
       enemies.tick();
+      if (enemies.hasNewEnemy) scene.add(enemies.list.slice(-1)[0].getGraphics());
       renderer.render(scene, camera);
     });
   }, []);
