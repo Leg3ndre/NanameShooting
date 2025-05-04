@@ -6,36 +6,47 @@ const HEIGHT = CONST.HEIGHT;
 const SIGHT_RANGE = CONST.SIGHT_RANGE;
 
 class Player {
-  VELOCITY = 8;
+  velocity = 8;
+  position: { [index: string]: number };
 
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
   private graphics;
 
   constructor() {
+    this.position = {
+      x: 0,
+      y: 0,
+      z: 0,
+    };
     this.graphics = this.buildGraphics();
   }
 
   tick(keysPressed: { [index: string]: boolean }) {
+    this.updatePosition(keysPressed);
+    Object.assign(this.graphics.position, this.position);
+  }
+
+  private updatePosition(keysPressed: { [index: string]: boolean }) {
     // 上下 (z-direction)
     if (keysPressed['w'] || keysPressed['ArrowUp']) {
-      this.graphics.position.z = Math.min(this.graphics.position.z + this.VELOCITY, HEIGHT);
+      this.position.z = Math.min(this.position.z + this.velocity, HEIGHT);
     }
     if (keysPressed['s'] || keysPressed['ArrowDown']) {
-      this.graphics.position.z = Math.max(this.graphics.position.z - this.VELOCITY, -HEIGHT);
+      this.position.z = Math.max(this.position.z - this.velocity, -HEIGHT);
     }
     // 左右 (y-direction)
     if (keysPressed['a'] || keysPressed['ArrowLeft']) {
-      this.graphics.position.y = Math.min(this.graphics.position.y + this.VELOCITY, WIDTH);
+      this.position.y = Math.min(this.position.y + this.velocity, WIDTH);
     }
     if (keysPressed['d'] || keysPressed['ArrowRight']) {
-      this.graphics.position.y = Math.max(this.graphics.position.y - this.VELOCITY, -WIDTH);
+      this.position.y = Math.max(this.position.y - this.velocity, -WIDTH);
     }
     // 前後 (x-direction)
     if (keysPressed['e'] || keysPressed['z']) {
-      this.graphics.position.x = Math.min(this.graphics.position.x + this.VELOCITY, SIGHT_RANGE);
+      this.position.x = Math.min(this.position.x + this.velocity, SIGHT_RANGE);
     }
     if (keysPressed['x'] || keysPressed['Shift']) {
-      this.graphics.position.x = Math.max(this.graphics.position.x - this.VELOCITY, -SIGHT_RANGE);
+      this.position.x = Math.max(this.position.x - this.velocity, -SIGHT_RANGE);
     }
   }
 
