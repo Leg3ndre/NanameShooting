@@ -2,10 +2,10 @@ import * as THREE from 'three';
 import { useEffect } from 'react';
 import styles from './index.module.css';
 import Keyboard from '../ui/keyboard';
-import animate from '../../gameLogic/animate';
-import Field from '../../gameLogic/field';
-import Player from '../../gameLogic/player';
-import EnemyBase from '../../gameLogic/enemy/base';
+import animate from '@/gameLogic/animate';
+import Field from '@/gameLogic/field';
+import Player from '@/gameLogic/player';
+import EnemyManager from '@/gameLogic/enemyManager';
 
 type Props = {
   width: number;
@@ -16,7 +16,7 @@ const GameCanvas = ({ width, height }: Props) => {
   let keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
-  const enemy = new EnemyBase;
+  const enemies = new EnemyManager;
 
   useEffect(() => {
     const renderer = new THREE.WebGLRenderer({
@@ -31,16 +31,19 @@ const GameCanvas = ({ width, height }: Props) => {
 
     const light = new THREE.HemisphereLight(0xffffff, 0x606060, 5.0);
 
+    enemies.generate();
     const scene = new THREE.Scene();
     scene.add(light);
     scene.add(field.getGraphics());
-    scene.add(enemy.getGraphics());
+    for (let enemy of enemies.list) {
+      scene.add(enemy.getGraphics());
+    }
     scene.add(player.getGraphics());
 
     animate(() => {
       field.tick();
       player.tick(keysPressed);
-      enemy.tick();
+      enemies.tick();
       renderer.render(scene, camera);
     });
   }, []);

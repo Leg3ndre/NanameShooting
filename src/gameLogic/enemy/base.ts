@@ -1,6 +1,17 @@
 import * as THREE from 'three';
 
-class EnemyBase {
+export interface IEnemy {
+  radius: number;
+  velocity: number;
+
+  material: THREE.Material;
+  graphics: THREE.Mesh;
+
+  tick(): void;
+  getGraphics(): THREE.Mesh;
+}
+
+class EnemyBase implements IEnemy {
   radius = 40;
   velocity = 4;
 
