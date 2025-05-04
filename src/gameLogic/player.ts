@@ -8,8 +8,8 @@ const SIGHT_RANGE = CONST.SIGHT_RANGE;
 class Player {
   VELOCITY = 8;
 
-  material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-  graphics;
+  private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
+  private graphics;
 
   constructor() {
     this.graphics = this.buildGraphics();
@@ -50,7 +50,7 @@ class Player {
     return group;
   }
 
-  buildWing() {
+  private buildWing() {
     let geometry = new THREE.BufferGeometry();
     geometry.setFromPoints(this.buildWingEdges());
     return new THREE.Line(geometry, this.material);
@@ -67,7 +67,7 @@ class Player {
     ];
   }
 
-  buildBody() {
+  private buildBody() {
     let geometry = new THREE.BufferGeometry();
     geometry.setFromPoints(this.buildBodyEdges());
     return new THREE.Line(geometry, this.material);

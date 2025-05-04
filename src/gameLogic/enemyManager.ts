@@ -2,7 +2,7 @@ import { IEnemy } from "./enemy/base";
 import EnemyBase from "./enemy/base";
 
 class EnemyManager {
-  list: IEnemy[] = [];
+  readonly list: IEnemy[] = [];
 
   constructor() { }
 

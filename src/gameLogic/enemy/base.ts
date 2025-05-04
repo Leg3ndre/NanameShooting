@@ -4,9 +4,6 @@ export interface IEnemy {
   radius: number;
   velocity: number;
 
-  material: THREE.Material;
-  graphics: THREE.Mesh;
-
   tick(): void;
   getGraphics(): THREE.Mesh;
 }
@@ -15,8 +12,8 @@ class EnemyBase implements IEnemy {
   radius = 40;
   velocity = 4;
 
-  material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
-  graphics;
+  private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
+  private graphics;
 
   constructor() {
     this.graphics = this.buildGraphics();
