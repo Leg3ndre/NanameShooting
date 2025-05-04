@@ -1,4 +1,9 @@
 import * as THREE from 'three';
+import * as CONST from '@/constants/game';
+
+const MAX_X = CONST.SIGHT_RANGE;
+const MAX_Y = CONST.WIDTH;
+const MAX_Z = CONST.HEIGHT;
 
 export interface IEnemy {
   radius: number;
@@ -19,9 +24,9 @@ class EnemyBase implements IEnemy {
 
   constructor() {
     this.position = {
-      x: 600,
-      y: 0,
-      z: 0,
+      x: MAX_X,
+      y: (Math.random() * 2.0 - 1.0) * MAX_Y,
+      z: (Math.random() * 2.0 - 1.0) * MAX_Z,
     }
     this.graphics = this.buildGraphics();
     Object.assign(this.graphics.position, this.position);
