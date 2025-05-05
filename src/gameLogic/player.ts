@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
+import Shot from './shot';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -12,6 +13,11 @@ class Player {
   velocity = 8;
   position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
+  hasNewShot = false;
+  shotList: Shot[] = [];
+
+  private SHOOT_INTERVAL = CONST.FPS / 6;
+  private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
 
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
@@ -29,6 +35,11 @@ class Player {
   ): void {
     this.updatePosition(keysPressed);
     Object.assign(this.graphics.position, this.position);
+
+    this.shoot(keysPressed);
+    for (const shot of this.shotList) {
+      shot.tick();
+    }
 
     this.processDameged(enemyList);
     if (this.isInvincible()) this.restIFrame--;
@@ -55,6 +66,24 @@ class Player {
     }
     if (keysPressed['x'] || keysPressed['Shift']) {
       this.position.x = Math.max(this.position.x - this.velocity, -SIGHT_RANGE);
+    }
+  }
+
+  private shoot(keysPressed: { [index: string]: boolean }) {
+    this.hasNewShot = false;
+
+    if (this.restSFrame > 0) {
+      this.restSFrame--;
+      return;
+    }
+    console.log(keysPressed);
+
+    if (keysPressed[' '] || keysPressed['Enter']) {
+      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0));
+      this.shotList.push(newShot);
+
+      this.hasNewShot = true;
+      this.restSFrame = this.SHOOT_INTERVAL;
     }
   }
 

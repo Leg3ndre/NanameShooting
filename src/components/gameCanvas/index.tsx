@@ -41,6 +41,9 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
     animate(() => {
       field.tick();
       player.tick(keysPressed, enemies.list);
+      if (player.hasNewShot && player.shotList.length > 0) {
+        scene.add(player.shotList.at(-1)!.getGraphics());
+      }
       playerLife(player.life);
       enemies.tick();
       renderer.render(scene, camera);
