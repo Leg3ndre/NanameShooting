@@ -1,5 +1,6 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game';
+import { Position } from '@/gameLogic/type';
 
 const MAX_X = CONST.SIGHT_RANGE;
 const MIN_X = -CONST.SIGHT_RANGE;
@@ -9,12 +10,12 @@ const MAX_Z = CONST.HEIGHT;
 export interface IEnemy {
   radius: number;
   velocity: number;
-  position: { [index: string]: number };
+  position: Position;
   isAlive: boolean;
 
   tick(): void;
   getGraphics(): THREE.Mesh;
-  attacks(pPosition: { [index: string]: number }, pRadius: number): boolean;
+  attacks(pPosition: Position, pRadius: number): boolean;
   dispose(): void;
 }
 
@@ -57,7 +58,7 @@ class EnemyBase implements IEnemy {
     return mesh;
   }
 
-  attacks(pPosition: { [index: string]: number }, pRadius: number): boolean {
+  attacks(pPosition: Position, pRadius: number): boolean {
     const radius = this.radius + pRadius;
     if (
       Math.abs(this.position.x - pPosition.x) < radius

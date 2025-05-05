@@ -1,6 +1,7 @@
 import * as THREE from 'three';
-import * as CONST from '../constants/game'
+import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
+import { Position } from './type';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -10,7 +11,7 @@ const MAX_I_FRAME = 0.5 * CONST.FPS;
 class Player {
   radius = 15;
   velocity = 8;
-  position: { [index: string]: number };
+  position: Position;
   life = CONST.INITIAL_PLAYER_LIFE;
   private restIFrame = 0; // invincibility frame
 
