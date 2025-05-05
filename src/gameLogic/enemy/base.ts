@@ -1,6 +1,5 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game';
-import { Position, Velocity } from '@/gameLogic/type';
 import Shot from '../shot';
 
 const MAX_X = CONST.SIGHT_RANGE;
@@ -10,13 +9,13 @@ const MAX_Z = CONST.HEIGHT;
 
 export interface IEnemy {
   radius: number;
-  velocity: Velocity;
-  position: Position;
+  velocity: THREE.Vector3;
+  position: THREE.Vector3;
   isAlive: boolean;
 
   tick(): void;
   getGraphics(): THREE.Group;
-  isAttacking(pPosition: Position, pRadius: number): boolean;
+  isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
 }
 
@@ -34,16 +33,12 @@ class EnemyBase implements IEnemy {
   private graphics;
 
   constructor() {
-    this.position = {
-      x: MAX_X,
-      y: (Math.random() * 2.0 - 1.0) * MAX_Y,
-      z: (Math.random() * 2.0 - 1.0) * MAX_Z,
-    };
-    this.velocity = {
-      x: -4,
-      y: 0,
-      z: 0,
-    };
+    this.position = new THREE.Vector3(
+      MAX_X,
+      (Math.random() * 2.0 - 1.0) * MAX_Y,
+      (Math.random() * 2.0 - 1.0) * MAX_Z,
+    );
+    this.velocity = new THREE.Vector3(-4, 0, 0);
     this.graphics = this.buildGraphics();
     Object.assign(this.graphics.position, this.position);
   }
@@ -55,9 +50,7 @@ class EnemyBase implements IEnemy {
       shot.tick();
     }
 
-    this.position.x += this.velocity.x;
-    this.position.y += this.velocity.y;
-    this.position.z += this.velocity.z;
+    this.position.add(this.velocity);
     Object.assign(this.graphics.position, this.position);
 
     if (this.position.x < MIN_X) this.isAlive = false;
@@ -87,16 +80,10 @@ class EnemyBase implements IEnemy {
     this.graphics.add(newShot.getGraphics());
   }
 
-  isAttacking(pPosition: Position, pRadius: number): boolean {
+  isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
     const radius = this.radius + pRadius;
-    if (
-      Math.abs(this.position.x - pPosition.x) < radius
-      && Math.abs(this.position.y - pPosition.y) < radius
-      && Math.abs(this.position.z - pPosition.z) < radius
-    ) {
-      return true;
-    }
-    return false;
+    const diffVec = this.position.clone().sub(pPosition);
+    return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);
   }
 
   dispose(): void {

@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import { Position } from './type';
 
 class Shot {
   radius = 10;
@@ -10,7 +9,7 @@ class Shot {
   private material = new THREE.MeshBasicMaterial({ color: this.color });
   private graphics;
 
-  constructor(position: Position) {
+  constructor(position: THREE.Vector3) {
     this.position = position;
     this.graphics = this.buildGraphics();
   }

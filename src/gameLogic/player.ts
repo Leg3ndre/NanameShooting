@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
-import { Position } from './type';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -11,7 +10,7 @@ const MAX_I_FRAME = 0.5 * CONST.FPS;
 class Player {
   radius = 15;
   velocity = 8;
-  position: Position;
+  position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
   private restIFrame = 0; // invincibility frame
 
@@ -20,11 +19,7 @@ class Player {
   private graphics;
 
   constructor() {
-    this.position = {
-      x: 0,
-      y: 0,
-      z: 0,
-    };
+    this.position = new THREE.Vector3(0, 0, 0);
     this.graphics = this.buildGraphics();
   }
 
