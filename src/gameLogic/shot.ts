@@ -34,6 +34,13 @@ class Shot {
     const mesh = new THREE.Mesh(geometry, this.material);
     return mesh;
   }
+
+  isAttacking(parentPosition: THREE.Vector3, objPosition: THREE.Vector3, objRadius: number): boolean {
+    const radius = this.radius + objRadius;
+    const ownPosition = parentPosition.clone().add(this.relPosition);
+    const diffVec = ownPosition.sub(objPosition);
+    return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);
+  }
 }
 
 export default Shot;

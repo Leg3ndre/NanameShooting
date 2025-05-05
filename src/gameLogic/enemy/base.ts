@@ -3,7 +3,7 @@ import * as CONST from '@/constants/game';
 import Shot from '../shot';
 
 const MAX_X = CONST.SIGHT_RANGE;
-const MIN_X = -CONST.SIGHT_RANGE * 1.5;
+const MIN_X = -CONST.SIGHT_RANGE * 2;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 
@@ -25,7 +25,7 @@ class EnemyBase implements IEnemy {
   velocity;
   isAlive = true;
 
-  private SHOOT_INTERVAL = CONST.FPS / 4;
+  private SHOOT_INTERVAL = CONST.FPS / 6;
 
   private count = 0;
   private shotList: Shot[] = [];
@@ -83,7 +83,13 @@ class EnemyBase implements IEnemy {
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
     const radius = this.radius + pRadius;
     const diffVec = this.position.clone().sub(pPosition);
-    return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);
+    if (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius){
+      return true;
+    }
+    for (const shot of this.shotList) {
+      if (shot.isAttacking(this.position, pPosition, pRadius)) return true;
+    }
+    return false;
   }
 
   dispose(): void {
