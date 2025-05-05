@@ -3,7 +3,7 @@ import * as CONST from '@/constants/game';
 import Shot from '../shot';
 
 const MAX_X = CONST.SIGHT_RANGE;
-const MIN_X = -CONST.SIGHT_RANGE;
+const MIN_X = -CONST.SIGHT_RANGE * 1.5;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 
@@ -75,7 +75,7 @@ class EnemyBase implements IEnemy {
   private shoot(): void {
     if (this.count % this.SHOOT_INTERVAL != 0) return;
 
-    const newShot = new Shot(this.position);
+    const newShot = new Shot;
     this.shotList.push(newShot);
     this.graphics.add(newShot.getGraphics());
   }

@@ -2,23 +2,25 @@ import * as THREE from 'three';
 
 class Shot {
   radius = 10;
-  position;
-  // velocity;
+  relPosition; // relative to parent
+  velocity;
+
+  private VELOCITY_INTENSITY = 4.0;
 
   private color = 0xffffff;
   private material = new THREE.MeshBasicMaterial({ color: this.color });
   private graphics;
 
-  constructor(position: THREE.Vector3) {
-    this.position = position;
+  constructor() {
+    this.relPosition = new THREE.Vector3(0, 0, 0);
+    this.velocity = (new THREE.Vector3).randomDirection().multiplyScalar(this.VELOCITY_INTENSITY);
+    this.velocity.x = -Math.abs(this.velocity.x);
     this.graphics = this.buildGraphics();
   }
 
   tick(): void {
-    // Object.assign(this.graphics.position, this.position);
-    this.graphics.position.x = -40;
-    this.graphics.position.y = 0;
-    this.graphics.position.z = 0;
+    this.relPosition.add(this.velocity);
+    Object.assign(this.graphics.position, this.relPosition);
   }
 
   getGraphics(): THREE.Mesh {
