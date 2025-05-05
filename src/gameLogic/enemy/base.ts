@@ -12,6 +12,8 @@ export interface IEnemy {
   velocity: THREE.Vector3;
   position: THREE.Vector3;
   isAlive: boolean;
+  hasNewShot: boolean;
+  shotList: Shot[];
 
   tick(): void;
   getGraphics(): THREE.Group;
@@ -24,11 +26,13 @@ class EnemyBase implements IEnemy {
   position;
   velocity;
   isAlive = true;
+  hasNewShot = false;
+  shotList: Shot[] = [];
 
   private SHOOT_INTERVAL = CONST.FPS / 6;
+  private SHOOT_SPEED = 4.0;
 
   private count = 0;
-  private shotList: Shot[] = [];
   private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
   private graphics;
 
@@ -45,6 +49,7 @@ class EnemyBase implements IEnemy {
 
   tick(): void {
     this.count++;
+
     this.shoot();
     for (const shot of this.shotList) {
       shot.tick();
@@ -72,12 +77,22 @@ class EnemyBase implements IEnemy {
     return group;
   }
 
-  private shoot(): void {
+  private shoot() {
+    this.hasNewShot = false;
     if (this.count % this.SHOOT_INTERVAL != 0) return;
 
-    const newShot = new Shot;
+    const newShot = this.buildNewShot();
     this.shotList.push(newShot);
     this.graphics.add(newShot.getGraphics());
+    this.hasNewShot = true;
+  }
+
+  private buildNewShot() {
+    let shotVelocity = new THREE.Vector3;
+    shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
+    shotVelocity.x = -Math.abs(shotVelocity.x);
+    shotVelocity.add(this.velocity);
+    return new Shot(this.position, shotVelocity);
   }
 
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
@@ -86,8 +101,9 @@ class EnemyBase implements IEnemy {
     if (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius){
       return true;
     }
+
     for (const shot of this.shotList) {
-      if (shot.isAttacking(this.position, pPosition, pRadius)) return true;
+      if (shot.isAttacking(pPosition, pRadius)) return true;
     }
     return false;
   }
@@ -96,6 +112,10 @@ class EnemyBase implements IEnemy {
     for (let mesh of this.graphics.children) {
       ((mesh as THREE.Mesh).material as THREE.MeshBasicMaterial).dispose();
       (mesh as THREE.Mesh).geometry.dispose();
+    }
+
+    for (let shot of this.shotList) {
+      shot.dispose();
     }
   }
 }

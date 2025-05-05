@@ -2,7 +2,7 @@ import * as THREE from 'three';
 
 class Shot {
   radius = 10;
-  relPosition; // relative to parent
+  position;
   velocity;
 
   private VELOCITY_INTENSITY = 4.0;
@@ -11,16 +11,15 @@ class Shot {
   private material = new THREE.MeshBasicMaterial({ color: this.color });
   private graphics;
 
-  constructor() {
-    this.relPosition = new THREE.Vector3(0, 0, 0);
-    this.velocity = (new THREE.Vector3).randomDirection().multiplyScalar(this.VELOCITY_INTENSITY);
-    this.velocity.x = -Math.abs(this.velocity.x);
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3) {
+    this.position = position.clone();
+    this.velocity = velocity.clone();
     this.graphics = this.buildGraphics();
   }
 
   tick(): void {
-    this.relPosition.add(this.velocity);
-    Object.assign(this.graphics.position, this.relPosition);
+    this.position.add(this.velocity);
+    Object.assign(this.graphics.position, this.position);
   }
 
   getGraphics(): THREE.Mesh {
@@ -35,11 +34,15 @@ class Shot {
     return mesh;
   }
 
-  isAttacking(parentPosition: THREE.Vector3, objPosition: THREE.Vector3, objRadius: number): boolean {
+  isAttacking(objPosition: THREE.Vector3, objRadius: number): boolean {
     const radius = this.radius + objRadius;
-    const ownPosition = parentPosition.clone().add(this.relPosition);
-    const diffVec = ownPosition.sub(objPosition);
+    const diffVec = this.position.clone().sub(objPosition);
     return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);
+  }
+
+  dispose(): void {
+    this.graphics.material.dispose();
+    this.graphics.geometry.dispose();
   }
 }
 

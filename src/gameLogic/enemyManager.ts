@@ -32,6 +32,9 @@ class EnemyManager {
 
     for (let enemy of this.list) {
       enemy.tick();
+      if (enemy.hasNewShot && enemy.shotList.length > 0) {
+        this.graphics.add(enemy.shotList.at(-1)!.getGraphics());
+      }
     }
     this.removeDeadEnemies();
   }
@@ -46,6 +49,9 @@ class EnemyManager {
     for (const enemy of this.list) {
       if (!enemy.isAlive) {
         this.graphics.remove(enemy.getGraphics());
+        for (const shot of enemy.shotList) {
+          this.graphics.remove(shot.getGraphics());
+        }
         enemy.dispose();
       }
     }
