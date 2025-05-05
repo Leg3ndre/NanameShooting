@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import * as CONST from '../constants/game'
 import { IEnemy } from './enemy/base';
-import { mx_bilerp_0 } from 'three/src/nodes/materialx/lib/mx_noise.js';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -35,7 +34,7 @@ class Player {
     this.updatePosition(keysPressed);
     Object.assign(this.graphics.position, this.position);
 
-    this.processCollision(enemyList);
+    this.processDameged(enemyList);
     if (this.isInvincible()) this.restIFrame--;
   }
 
@@ -63,8 +62,8 @@ class Player {
     }
   }
 
-  private processCollision(enemyList: IEnemy[]) {
-    if (!this.isInvincible() && this.detectCollistion(enemyList)) {
+  private processDameged(enemyList: IEnemy[]) {
+    if (!this.isInvincible() && this.detectAttacked(enemyList)) {
       this.life--;
       this.restIFrame = MAX_I_FRAME;
     }
@@ -78,16 +77,9 @@ class Player {
     }
   }
 
-  detectCollistion(enemyList: IEnemy[]): boolean {
+  detectAttacked(enemyList: IEnemy[]): boolean {
     for (const enemy of enemyList) {
-      const radius = this.radius + enemy.radius;
-      if (
-        Math.abs(this.position.x - enemy.position.x) < radius
-        && Math.abs(this.position.y - enemy.position.y) < radius
-        && Math.abs(this.position.z - enemy.position.z) < radius
-      ) {
-        return true;
-      }
+      if (enemy.attacks(this.position, this.radius)) return true;
     }
     return false;
   }

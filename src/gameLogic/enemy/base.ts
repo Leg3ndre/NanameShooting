@@ -14,6 +14,7 @@ export interface IEnemy {
 
   tick(): void;
   getGraphics(): THREE.Mesh;
+  attacks(pPosition: { [index: string]: number }, pRadius: number): boolean;
   dispose(): void;
 }
 
@@ -54,6 +55,18 @@ class EnemyBase implements IEnemy {
     mesh.rotation.z = -Math.PI / 4;
     mesh.rotation.y = -Math.PI / 3;
     return mesh;
+  }
+
+  attacks(pPosition: { [index: string]: number }, pRadius: number): boolean {
+    const radius = this.radius + pRadius;
+    if (
+      Math.abs(this.position.x - pPosition.x) < radius
+      && Math.abs(this.position.y - pPosition.y) < radius
+      && Math.abs(this.position.z - pPosition.z) < radius
+    ) {
+      return true;
+    }
+    return false;
   }
 
   dispose(): void {
