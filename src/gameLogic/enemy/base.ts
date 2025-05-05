@@ -15,7 +15,7 @@ export interface IEnemy {
 
   tick(): void;
   getGraphics(): THREE.Mesh;
-  attacks(pPosition: Position, pRadius: number): boolean;
+  isAttacking(pPosition: Position, pRadius: number): boolean;
   dispose(): void;
 }
 
@@ -25,6 +25,10 @@ class EnemyBase implements IEnemy {
   position;
   isAlive = true;
 
+  private SHOOT_INTERVAL = CONST.FPS / 4;
+
+  private count = 0;
+  // private shotList;
   private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
   private graphics;
 
@@ -39,6 +43,9 @@ class EnemyBase implements IEnemy {
   }
 
   tick(): void {
+    this.count++;
+    this.shoot();
+
     this.position.x -= this.velocity;
     Object.assign(this.graphics.position, this.position);
 
@@ -58,7 +65,13 @@ class EnemyBase implements IEnemy {
     return mesh;
   }
 
-  attacks(pPosition: Position, pRadius: number): boolean {
+  private shoot(): void {
+    if (this.count % this.SHOOT_INTERVAL != 0) return;
+
+    console.log("shoot!");
+  }
+
+  isAttacking(pPosition: Position, pRadius: number): boolean {
     const radius = this.radius + pRadius;
     if (
       Math.abs(this.position.x - pPosition.x) < radius

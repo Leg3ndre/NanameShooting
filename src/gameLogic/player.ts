@@ -80,7 +80,7 @@ class Player {
 
   detectAttacked(enemyList: IEnemy[]): boolean {
     for (const enemy of enemyList) {
-      if (enemy.attacks(this.position, this.radius)) return true;
+      if (enemy.isAttacking(this.position, this.radius)) return true;
     }
     return false;
   }
