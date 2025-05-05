@@ -1,19 +1,21 @@
+import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
 import EnemyBase from './enemy/base';
 
 class EnemyManager {
-  hasNewEnemy = false;
   list: IEnemy[] = [];
 
   private count = 0;
+  private graphics;
 
-  constructor() { }
+  constructor() {
+    this.graphics = this.buildGraphics();
+  }
 
   tick(): void {
-    if (this.hasNewEnemy) this.hasNewEnemy = false;
-
     this.count++;
+    // spawn table
     if (this.count <= CONST.FPS * 30) {
       if (this.count % (CONST.FPS * 3) == 0) {
         this.generate();
@@ -31,22 +33,31 @@ class EnemyManager {
     for (let enemy of this.list) {
       enemy.tick();
     }
+    this.removeDeadEnemies();
   }
 
-  generate(): void {
-    this.hasNewEnemy = true;
+  private generate() {
     const newEnemy = new EnemyBase;
     this.list.push(newEnemy);
+    this.graphics.add(newEnemy.getGraphics());
   }
 
-  lastEnemy(): IEnemy {
-    return this.list.slice(-1)[0];
-  }
-
-  popDeadEnemies(): IEnemy[] {
-    const deadEnemies = this.list.filter((e) => !e.isAlive);
+  private removeDeadEnemies() {
+    for (const enemy of this.list) {
+      if (!enemy.isAlive) {
+        this.graphics.remove(enemy.getGraphics());
+        enemy.dispose();
+      }
+    }
     this.list = this.list.filter((e) => e.isAlive);
-    return deadEnemies;
+  }
+
+  getGraphics(): THREE.Group {
+    return this.graphics;
+  }
+
+  private buildGraphics() {
+    return new THREE.Group;
   }
 }
 

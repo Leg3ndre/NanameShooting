@@ -36,19 +36,13 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
     scene.add(light);
     scene.add(field.getGraphics());
     scene.add(player.getGraphics());
+    scene.add(enemies.getGraphics());
 
     animate(() => {
       field.tick();
       player.tick(keysPressed, enemies.list);
       playerLife(player.life);
       enemies.tick();
-      if (enemies.hasNewEnemy) {
-        scene.add(enemies.lastEnemy().getGraphics());
-      }
-      for (let enemy of enemies.popDeadEnemies()) {
-        scene.remove(enemy.getGraphics());
-        enemy.dispose();
-      }
       renderer.render(scene, camera);
     });
   }, []);
