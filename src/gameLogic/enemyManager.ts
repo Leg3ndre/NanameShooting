@@ -5,9 +5,9 @@ import EnemyBase from './enemy/base';
 
 class EnemyManager {
   list: IEnemy[] = [];
+  graphics;
 
   private count = 0;
-  private graphics;
 
   constructor() {
     this.graphics = this.buildGraphics();
@@ -42,13 +42,13 @@ class EnemyManager {
   private generate() {
     const newEnemy = new EnemyBase;
     this.list.push(newEnemy);
-    this.graphics.add(newEnemy.getGraphics());
+    this.graphics.add(newEnemy.graphics);
   }
 
   private removeDeadEnemies() {
     for (const enemy of this.list) {
       if (!enemy.isAlive) {
-        this.graphics.remove(enemy.getGraphics());
+        this.graphics.remove(enemy.graphics);
         for (const shot of enemy.shotList) {
           this.graphics.remove(shot.getGraphics());
         }
@@ -56,10 +56,6 @@ class EnemyManager {
       }
     }
     this.list = this.list.filter((e) => e.isAlive);
-  }
-
-  getGraphics(): THREE.Group {
-    return this.graphics;
   }
 
   private buildGraphics() {

@@ -1,6 +1,7 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game';
-import Shot from '../shot';
+import Shot from '@/gameLogic/shot';
+import EnemyGraphics from '@/gameLogic/graphics/enemy';
 
 const MAX_X = CONST.SIGHT_RANGE;
 const MIN_X = -CONST.SIGHT_RANGE * 2;
@@ -8,6 +9,7 @@ const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 
 export interface IEnemy {
+  graphics: THREE.Group;
   radius: number;
   velocity: THREE.Vector3;
   position: THREE.Vector3;
@@ -16,12 +18,12 @@ export interface IEnemy {
   shotList: Shot[];
 
   tick(): void;
-  getGraphics(): THREE.Group;
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
 }
 
 class EnemyBase implements IEnemy {
+  graphics;
   radius = 40;
   position;
   velocity;
@@ -29,16 +31,16 @@ class EnemyBase implements IEnemy {
   hasNewShot = false;
   shotList: Shot[] = [];
 
-  private shotColor = 0xe0e0e0;
+  private SHOT_COLOR = 0xe0e0e0;
   private SHOOT_INTERVAL = CONST.FPS / 6;
   private SHOOT_SPEED = 4.0;
 
   private count = 0;
-  private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
-  private graphics;
+  private builder;
 
   constructor() {
-    this.graphics = this.buildGraphics();
+    this.builder = new EnemyGraphics;
+    this.graphics = this.builder.buildGraphics(this.radius);
     Object.assign(this.graphics.position, new THREE.Vector3(
       MAX_X,
       (Math.random() * 2.0 - 1.0) * MAX_Y,
@@ -61,22 +63,6 @@ class EnemyBase implements IEnemy {
     if (this.position.x < MIN_X) this.isAlive = false;
   }
 
-  getGraphics(): THREE.Group {
-    return this.graphics;
-  }
-
-  private buildGraphics() {
-    const detail = 0;
-    const geometry = new THREE.TetrahedronGeometry(this.radius, detail)
-    const mesh = new THREE.Mesh(geometry, this.material);
-    mesh.rotation.z = -Math.PI / 4;
-    mesh.rotation.y = -Math.PI / 3;
-
-    const group = new THREE.Group;
-    group.add(mesh);
-    return group;
-  }
-
   private shoot() {
     this.hasNewShot = false;
     if (this.count % this.SHOOT_INTERVAL != 0) return;
@@ -92,7 +78,7 @@ class EnemyBase implements IEnemy {
     shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.x = -Math.abs(shotVelocity.x);
     shotVelocity.add(this.velocity);
-    return new Shot(this.position, shotVelocity, this.shotColor);
+    return new Shot(this.position, shotVelocity, this.SHOT_COLOR);
   }
 
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
@@ -109,11 +95,7 @@ class EnemyBase implements IEnemy {
   }
 
   dispose(): void {
-    for (let mesh of this.graphics.children) {
-      ((mesh as THREE.Mesh).material as THREE.MeshBasicMaterial).dispose();
-      (mesh as THREE.Mesh).geometry.dispose();
-    }
-
+    this.builder.dispose();
     for (let shot of this.shotList) {
       shot.dispose();
     }

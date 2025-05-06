@@ -1,0 +1,26 @@
+import * as THREE from 'three';
+
+class EnemyGraphics {
+  private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
+  private group = new THREE.Group;;
+
+  buildGraphics(radius: number): THREE.Group {
+    const detail = 0;
+    const geometry = new THREE.TetrahedronGeometry(radius, detail)
+    const mesh = new THREE.Mesh(geometry, this.material);
+    mesh.rotation.z = -Math.PI / 4;
+    mesh.rotation.y = -Math.PI / 3;
+
+    this.group.add(mesh);
+    return this.group;
+  }
+
+  dispose(): void {
+    for (let mesh of this.group.children) {
+      ((mesh as THREE.Mesh).material as THREE.MeshBasicMaterial).dispose();
+      (mesh as THREE.Mesh).geometry.dispose();
+    }
+  }
+}
+
+export default EnemyGraphics;

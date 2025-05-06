@@ -36,7 +36,7 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
     scene.add(light);
     scene.add(field.graphics);
     scene.add(player.graphics);
-    scene.add(enemies.getGraphics());
+    scene.add(enemies.graphics);
 
     animate(() => {
       field.tick();
