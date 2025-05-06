@@ -14,10 +14,9 @@ export interface IEnemy {
   velocity: THREE.Vector3;
   position: THREE.Vector3;
   isAlive: boolean;
-  hasNewShot: boolean;
-  shotList: Shot[];
 
   tick(playerShots: Shot[]): void;
+  shoot(): Shot | null;
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
 }
@@ -29,8 +28,6 @@ class EnemyBase implements IEnemy {
   position;
   velocity;
   isAlive = true;
-  hasNewShot = false;
-  shotList: Shot[] = [];
 
   private SHOT_COLOR = 0xe0e0e0;
   private SHOOT_INTERVAL = CONST.FPS / 6;
@@ -55,11 +52,6 @@ class EnemyBase implements IEnemy {
   tick(playerShots: Shot[]): void {
     this.count++;
 
-    this.shoot();
-    for (const shot of this.shotList) {
-      shot.tick();
-    }
-
     this.position.add(this.velocity);
     if (this.position.x < MIN_X) this.isAlive = false;
 
@@ -70,14 +62,10 @@ class EnemyBase implements IEnemy {
     }
   }
 
-  private shoot() {
-    this.hasNewShot = false;
-    if (this.count % this.SHOOT_INTERVAL != 0) return;
+  shoot(): Shot | null {
+    if (this.count % this.SHOOT_INTERVAL != 0) return null;
 
-    const newShot = this.buildNewShot();
-    this.shotList.push(newShot);
-    this.graphics.add(newShot.graphics);
-    this.hasNewShot = true;
+    return this.buildNewShot();
   }
 
   private buildNewShot() {
@@ -91,21 +79,11 @@ class EnemyBase implements IEnemy {
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
     const radius = this.radius + pRadius;
     const diffVec = this.position.clone().sub(pPosition);
-    if (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius){
-      return true;
-    }
-
-    for (const shot of this.shotList) {
-      if (shot.isAttacking(pPosition, pRadius)) return true;
-    }
-    return false;
+    return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);
   }
 
   dispose(): void {
     this.builder.dispose();
-    for (let shot of this.shotList) {
-      shot.dispose();
-    }
   }
 }
 

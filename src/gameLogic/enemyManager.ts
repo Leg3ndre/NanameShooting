@@ -5,8 +5,9 @@ import EnemyBase from './enemy/base';
 import Shot from './shot';
 
 class EnemyManager {
-  list: IEnemy[] = [];
   graphics;
+  list: IEnemy[] = [];
+  shotList: Shot[] = [];
 
   private count = 0;
 
@@ -33,11 +34,18 @@ class EnemyManager {
 
     for (let enemy of this.list) {
       enemy.tick(playerShots);
-      if (enemy.hasNewShot && enemy.shotList.length > 0) {
-        this.graphics.add(enemy.shotList.at(-1)!.graphics);
+      const newShot: Shot | null = enemy.shoot();
+      if (newShot != null) {
+        this.shotList.push(newShot);
+        this.graphics.add(newShot.graphics);
       }
     }
     this.removeDeadEnemies();
+
+    for (const shot of this.shotList) {
+      shot.tick();
+    }
+    this.removeDeadShot();
   }
 
   private generate() {
@@ -50,13 +58,20 @@ class EnemyManager {
     for (const enemy of this.list) {
       if (!enemy.isAlive) {
         this.graphics.remove(enemy.graphics);
-        for (const shot of enemy.shotList) {
-          this.graphics.remove(shot.graphics);
-        }
         enemy.dispose();
       }
     }
     this.list = this.list.filter((e) => e.isAlive);
+  }
+
+  private removeDeadShot() {
+    for (const shot of this.shotList) {
+      if (!shot.isAlive) {
+        this.graphics.remove(shot.graphics);
+        shot.dispose();
+      }
+    }
+    this.shotList = this.shotList.filter((s) => s.isAlive);
   }
 
   private buildGraphics() {

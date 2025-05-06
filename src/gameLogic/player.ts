@@ -35,6 +35,7 @@ class Player {
   tick(
     keysPressed: { [index: string]: boolean },
     enemyList: IEnemy[],
+    enemyShotList: Shot[],
   ): void {
     this.updatePosition(keysPressed);
 
@@ -48,7 +49,7 @@ class Player {
       }
     }
 
-    this.processDameged(enemyList);
+    this.processDameged(enemyList, enemyShotList);
     if (this.isInvincible()) this.restIFrame--;
   }
 
@@ -90,8 +91,8 @@ class Player {
     }
   }
 
-  private processDameged(enemyList: IEnemy[]) {
-    if (!this.isInvincible() && this.detectAttacked(enemyList)) {
+  private processDameged(enemyList: IEnemy[], enemyShotList: Shot[]) {
+    if (!this.isInvincible() && this.detectAttacked(enemyList, enemyShotList)) {
       this.life--;
       this.restIFrame = MAX_I_FRAME;
     }
@@ -103,9 +104,12 @@ class Player {
     }
   }
 
-  detectAttacked(enemyList: IEnemy[]): boolean {
+  private detectAttacked(enemyList: IEnemy[], enemyShotList: Shot[]) {
     for (const enemy of enemyList) {
       if (enemy.isAttacking(this.position, this.radius)) return true;
+    }
+    for (const shot of enemyShotList) {
+      if (shot.isAttacking(this.position, this.radius)) return true;
     }
     return false;
   }
