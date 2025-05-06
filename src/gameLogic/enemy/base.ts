@@ -17,7 +17,7 @@ export interface IEnemy {
   hasNewShot: boolean;
   shotList: Shot[];
 
-  tick(): void;
+  tick(playerShots: Shot[]): void;
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
 }
@@ -52,7 +52,7 @@ class EnemyBase implements IEnemy {
     this.velocity = new THREE.Vector3(-4, 0, 0);
   }
 
-  tick(): void {
+  tick(playerShots: Shot[]): void {
     this.count++;
 
     this.shoot();
@@ -62,6 +62,12 @@ class EnemyBase implements IEnemy {
 
     this.position.add(this.velocity);
     if (this.position.x < MIN_X) this.isAlive = false;
+
+    for (const pShot of playerShots) {
+      if (pShot.isAttacking(this.position, this.radius)) {
+        this.isAlive = false;
+      }
+    }
   }
 
   private shoot() {

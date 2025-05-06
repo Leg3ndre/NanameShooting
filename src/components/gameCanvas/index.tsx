@@ -49,7 +49,7 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
         player.removeDeadShot();
       }
       playerLife(player.life);
-      enemies.tick();
+      enemies.tick(player.shotList);
       renderer.render(scene, camera);
     });
   }, []);

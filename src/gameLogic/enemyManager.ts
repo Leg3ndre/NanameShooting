@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
 import EnemyBase from './enemy/base';
+import Shot from './shot';
 
 class EnemyManager {
   list: IEnemy[] = [];
@@ -13,7 +14,7 @@ class EnemyManager {
     this.graphics = this.buildGraphics();
   }
 
-  tick(): void {
+  tick(playerShots: Shot[]): void {
     this.count++;
     // spawn table
     if (this.count <= CONST.FPS * 30) {
@@ -31,7 +32,7 @@ class EnemyManager {
     }
 
     for (let enemy of this.list) {
-      enemy.tick();
+      enemy.tick(playerShots);
       if (enemy.hasNewShot && enemy.shotList.length > 0) {
         this.graphics.add(enemy.shotList.at(-1)!.graphics);
       }
