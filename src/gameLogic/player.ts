@@ -62,10 +62,10 @@ class Player {
       position.y = Math.max(position.y - this.velocity, -WIDTH);
     }
     // 前後 (x-direction)
-    if (keysPressed['e'] || keysPressed['z']) {
+    if (keysPressed['e'] || keysPressed['x']) {
       position.x = Math.min(position.x + this.velocity, SIGHT_RANGE);
     }
-    if (keysPressed['x'] || keysPressed['c']) {
+    if (keysPressed['q'] || keysPressed['z']) {
       position.x = Math.max(position.x - this.velocity, -SIGHT_RANGE);
     }
   }
