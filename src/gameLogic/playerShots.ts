@@ -4,6 +4,9 @@ import Shot from './shot';
 class PlayerShots {
   graphics;
   list: Shot[] = [];
+  velocity = 10;
+
+  private SHOT_COLOR = 0xd0d000;
 
   constructor() {
     this.graphics = new THREE.Group;
@@ -16,9 +19,10 @@ class PlayerShots {
     this.removeDeadShot();
   }
 
-  add(shot: Shot): void {
-    this.list.push(shot);
-    this.graphics.add(shot.graphics);
+  generate(playerPosition: THREE.Vector3): void {
+    const newShot = new Shot(playerPosition, new THREE.Vector3(this.velocity, 0, 0), this.SHOT_COLOR);
+    this.list.push(newShot);
+    this.graphics.add(newShot.graphics);
   }
 
   isAttacking(position: THREE.Vector3, radius: number): boolean {

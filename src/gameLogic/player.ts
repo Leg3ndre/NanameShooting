@@ -20,7 +20,6 @@ class Player {
   score = 0;
   shotList = new PlayerShots;
 
-  private SHOT_COLOR = 0xd0d000;
   private SHOOT_INTERVAL = CONST.FPS / 4;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
@@ -77,8 +76,7 @@ class Player {
     }
 
     if (keysPressed[' '] || keysPressed['Enter']) {
-      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.SHOT_COLOR);
-      this.shotList.add(newShot);
+      this.shotList.generate(this.position);
       this.restSFrame = this.SHOOT_INTERVAL;
     }
   }
