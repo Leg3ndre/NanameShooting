@@ -107,6 +107,17 @@ class Player {
   private isInvincible() {
     return (this.restIFrame > 0);
   }
+
+  hasDeadShot(): boolean {
+    return (this.shotList.length > 0 && !this.shotList[0].isAlive);
+  }
+
+  removeDeadShot(): void {
+    if (!this.hasDeadShot()) return;
+
+    const deadShot = this.shotList.shift();
+    deadShot!.dispose();
+  }
 }
 
 export default Player;

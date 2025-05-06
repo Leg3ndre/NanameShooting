@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import ShotGraphics from './graphics/shot';
+import * as CONST from '@/constants/game';
+
+const MAX_X = CONST.SIGHT_RANGE * 2;
+const MIN_X = -CONST.SIGHT_RANGE * 2;
 
 class Shot {
   graphics;
@@ -7,6 +11,7 @@ class Shot {
   radius = 10;
   position;
   velocity;
+  isAlive = true;
 
   private builder;
 
@@ -21,6 +26,9 @@ class Shot {
 
   tick(): void {
     this.position.add(this.velocity);
+
+    if (this.position.x > MAX_X) this.isAlive = false;
+    if (this.position.x < MIN_X) this.isAlive = false;
   }
 
   isAttacking(objPosition: THREE.Vector3, objRadius: number): boolean {
