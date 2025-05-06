@@ -3,6 +3,7 @@ import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
 import EnemyBase from './enemy/base';
 import Shot from './shot';
+import PlayerShots from './playerShots';
 
 class EnemyManager {
   graphics;
@@ -15,7 +16,7 @@ class EnemyManager {
     this.graphics = this.buildGraphics();
   }
 
-  tick(playerShots: Shot[]): void {
+  tick(playerShots: PlayerShots): void {
     this.count++;
     // spawn table
     if (this.count <= CONST.FPS * 30) {

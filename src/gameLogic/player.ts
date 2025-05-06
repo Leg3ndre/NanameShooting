@@ -3,6 +3,7 @@ import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
 import Shot from './shot';
 import PlayerGraphics from './graphics/player';
+import PlayerShots from './playerShots';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -17,8 +18,7 @@ class Player {
   position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
   score = 0;
-  hasNewShot = false;
-  shotList: Shot[] = [];
+  shotList = new PlayerShots;
 
   private SHOT_COLOR = 0xd0d000;
   private SHOOT_INTERVAL = CONST.FPS / 4;
@@ -40,13 +40,9 @@ class Player {
     this.updatePosition(keysPressed);
 
     this.shoot(keysPressed);
-    for (const shot of this.shotList) {
-      shot.tick();
-      for (const enemy of enemyList) {
-        if (shot.isAttacking(enemy.position, enemy.radius)) {
-          this.score++;
-        }
-      }
+    this.shotList.tick();
+    for (const enemy of enemyList) {
+      if (this.shotList.isAttacking(enemy.position, enemy.radius)) this.score++;
     }
 
     this.processDameged(enemyList, enemyShotList);
@@ -75,8 +71,6 @@ class Player {
   }
 
   private shoot(keysPressed: { [index: string]: boolean }) {
-    this.hasNewShot = false;
-
     if (this.restSFrame > 0) {
       this.restSFrame--;
       return;
@@ -84,9 +78,7 @@ class Player {
 
     if (keysPressed[' '] || keysPressed['Enter']) {
       const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.SHOT_COLOR);
-      this.shotList.push(newShot);
-
-      this.hasNewShot = true;
+      this.shotList.add(newShot);
       this.restSFrame = this.SHOOT_INTERVAL;
     }
   }
@@ -116,17 +108,6 @@ class Player {
 
   private isInvincible() {
     return (this.restIFrame > 0);
-  }
-
-  hasDeadShot(): boolean {
-    return (this.shotList.length > 0 && !this.shotList[0].isAlive);
-  }
-
-  removeDeadShot(): void {
-    if (!this.hasDeadShot()) return;
-
-    const deadShot = this.shotList.shift();
-    deadShot!.dispose();
   }
 }
 

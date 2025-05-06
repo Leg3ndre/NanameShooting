@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game';
 import Shot from '@/gameLogic/shot';
 import EnemyGraphics from '@/gameLogic/graphics/enemy';
+import PlayerShots from '../playerShots';
 
 const MAX_X = CONST.SIGHT_RANGE;
 const MIN_X = -CONST.SIGHT_RANGE * 2;
@@ -15,7 +16,7 @@ export interface IEnemy {
   position: THREE.Vector3;
   isAlive: boolean;
 
-  tick(playerShots: Shot[]): void;
+  tick(playerShots: PlayerShots): void;
   shoot(): Shot | null;
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
@@ -49,16 +50,14 @@ class EnemyBase implements IEnemy {
     this.velocity = new THREE.Vector3(-4, 0, 0);
   }
 
-  tick(playerShots: Shot[]): void {
+  tick(playerShots: PlayerShots): void {
     this.count++;
 
     this.position.add(this.velocity);
     if (this.position.x < MIN_X) this.isAlive = false;
 
-    for (const pShot of playerShots) {
-      if (pShot.isAttacking(this.position, this.radius)) {
-        this.isAlive = false;
-      }
+    if (playerShots.isAttacking(this.position, this.radius)) {
+      this.isAlive = false;
     }
   }
 

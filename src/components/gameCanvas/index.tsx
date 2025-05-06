@@ -37,18 +37,12 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     scene.add(light);
     scene.add(field.graphics);
     scene.add(player.graphics);
+    scene.add(player.shotList.graphics);
     scene.add(enemies.graphics);
 
     animate(() => {
       field.tick();
       player.tick(keysPressed, enemies.list, enemies.shotList);
-      if (player.hasNewShot && player.shotList.length) {
-        scene.add(player.shotList.at(-1)!.graphics);
-      }
-      if (player.hasDeadShot()) {
-        scene.remove(player.shotList[0].graphics);
-        player.removeDeadShot();
-      }
       setPlayerLife(player.life);
       setScore(player.score);
       enemies.tick(player.shotList);
