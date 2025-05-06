@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
 import Shot from './shot';
+import PlayerGraphics from './graphics/player';
 
 const WIDTH = CONST.WIDTH;
 const HEIGHT = CONST.HEIGHT;
@@ -9,6 +10,7 @@ const SIGHT_RANGE = CONST.SIGHT_RANGE;
 const MAX_I_FRAME = 0.5 * CONST.FPS;
 
 class Player {
+  graphics;
   radius = 15;
   velocity = 8;
   position: THREE.Vector3;
@@ -20,13 +22,11 @@ class Player {
   private SHOOT_INTERVAL = CONST.FPS / 6;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
-
-  private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
-  private materialAttacked = new THREE.LineBasicMaterial({ color: 0xffffff });
-  private graphics;
+  private builder;
 
   constructor() {
-    this.graphics = this.buildGraphics();
+    this.builder = new PlayerGraphics;
+    this.graphics = this.builder.buildGraphics();
     this.position = this.graphics.position;
   }
 
@@ -93,12 +93,10 @@ class Player {
       this.restIFrame = MAX_I_FRAME;
     }
 
-    for (let mesh of this.graphics.children) {
-      if (this.isInvincible()) {
-        (mesh as THREE.Line).material = this.materialAttacked;
-      } else {
-        (mesh as THREE.Line).material = this.material;
-      }
+    if (this.isInvincible()) {
+      this.builder.colorAttacked();
+    } else {
+      this.builder.colorNormal();
     }
   }
 
@@ -111,51 +109,6 @@ class Player {
 
   private isInvincible() {
     return (this.restIFrame > 0);
-  }
-
-  getGraphics(): THREE.Group {
-    return this.graphics;
-  }
-
-  private buildGraphics() {
-    const group = new THREE.Group();
-    group.add(this.buildWing());
-    group.add(this.buildBody());
-    return group;
-  }
-
-  private buildWing() {
-    let geometry = new THREE.BufferGeometry();
-    geometry.setFromPoints(this.buildWingEdges());
-    return new THREE.Line(geometry, this.material);
-  }
-
-  private buildWingEdges() {
-    const r = 20;
-    const z = 0;
-    return [
-      new THREE.Vector3(r * Math.cos(0.0), r * Math.sin(0.0), z),
-      new THREE.Vector3(r * Math.cos(2 * Math.PI / 3), r * Math.sin(2 * Math.PI / 3), z),
-      new THREE.Vector3(r * Math.cos(4 * Math.PI / 3), r * Math.sin(4 * Math.PI / 3), z),
-      new THREE.Vector3(r * Math.cos(0.0), r * Math.sin(0.0), z),
-    ];
-  }
-
-  private buildBody() {
-    let geometry = new THREE.BufferGeometry();
-    geometry.setFromPoints(this.buildBodyEdges());
-    return new THREE.Line(geometry, this.material);
-  }
-
-  private buildBodyEdges() {
-    const r = 20;
-    const y = 0;
-    return [
-      new THREE.Vector3(r * Math.cos(0.0), y, r * Math.sin(0.0)),
-      new THREE.Vector3(r * Math.cos(2 * Math.PI / 3), y, 0.0),
-      new THREE.Vector3(r * Math.cos(4 * Math.PI / 3), y, r * Math.sin(4 * Math.PI / 3)),
-      new THREE.Vector3(r * Math.cos(0.0), y, r * Math.sin(0.0)),
-    ];
   }
 }
 

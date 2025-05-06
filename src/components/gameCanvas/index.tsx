@@ -35,7 +35,7 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
     const scene = new THREE.Scene();
     scene.add(light);
     scene.add(field.graphics);
-    scene.add(player.getGraphics());
+    scene.add(player.graphics);
     scene.add(enemies.getGraphics());
 
     animate(() => {
