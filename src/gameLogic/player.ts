@@ -19,7 +19,7 @@ class Player {
   shotList: Shot[] = [];
 
   private shotColor = 0xd0d000;
-  private SHOOT_INTERVAL = CONST.FPS / 6;
+  private SHOOT_INTERVAL = CONST.FPS / 4;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
   private builder;
