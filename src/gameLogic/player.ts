@@ -49,26 +49,22 @@ class Player {
   private updatePosition(keysPressed: { [index: string]: boolean }) {
     let position = this.position;
     // 上下 (z-direction)
-    if (keysPressed['w'] || keysPressed['ArrowUp']) {
-      position.z = Math.min(position.z + this.velocity, HEIGHT);
-    }
-    if (keysPressed['s'] || keysPressed['ArrowDown']) {
-      position.z = Math.max(position.z - this.velocity, -HEIGHT);
-    }
+    if (keysPressed['w'] || keysPressed['ArrowUp']) position.z += this.velocity;
+    if (keysPressed['s'] || keysPressed['ArrowDown']) position.z -= this.velocity;
     // 左右 (y-direction)
-    if (keysPressed['a'] || keysPressed['ArrowLeft']) {
-      position.y = Math.min(position.y + this.velocity, WIDTH);
-    }
-    if (keysPressed['d'] || keysPressed['ArrowRight']) {
-      position.y = Math.max(position.y - this.velocity, -WIDTH);
-    }
+    if (keysPressed['a'] || keysPressed['ArrowLeft']) position.y += this.velocity;
+    if (keysPressed['d'] || keysPressed['ArrowRight']) position.y -= this.velocity;
     // 前後 (x-direction)
-    if (keysPressed['e'] || keysPressed['x']) {
-      position.x = Math.min(position.x + this.velocity, SIGHT_RANGE);
-    }
-    if (keysPressed['q'] || keysPressed['z']) {
-      position.x = Math.max(position.x - this.velocity, -SIGHT_RANGE);
-    }
+    if (keysPressed['e'] || keysPressed['x']) position.x += this.velocity;
+    if (keysPressed['q'] || keysPressed['z']) position.x -= this.velocity;
+
+    this.regularizePosition();
+  }
+
+  private regularizePosition() {
+    this.position.x = Math.max(Math.min(this.position.x, SIGHT_RANGE), -SIGHT_RANGE);
+    this.position.y = Math.max(Math.min(this.position.y, WIDTH), -WIDTH);
+    this.position.z = Math.max(Math.min(this.position.z, HEIGHT), -HEIGHT);
   }
 
   private shoot(keysPressed: { [index: string]: boolean }) {
