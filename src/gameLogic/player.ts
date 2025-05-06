@@ -65,7 +65,7 @@ class Player {
     if (keysPressed['e'] || keysPressed['z']) {
       position.x = Math.min(position.x + this.velocity, SIGHT_RANGE);
     }
-    if (keysPressed['x'] || keysPressed['Shift']) {
+    if (keysPressed['x'] || keysPressed['c']) {
       position.x = Math.max(position.x - this.velocity, -SIGHT_RANGE);
     }
   }
