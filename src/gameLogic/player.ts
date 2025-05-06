@@ -16,6 +16,7 @@ class Player {
   hasNewShot = false;
   shotList: Shot[] = [];
 
+  private shotColor = 0xd0d000;
   private SHOOT_INTERVAL = CONST.FPS / 6;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
@@ -79,7 +80,7 @@ class Player {
     console.log(keysPressed);
 
     if (keysPressed[' '] || keysPressed['Enter']) {
-      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0));
+      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.shotColor);
       this.shotList.push(newShot);
 
       this.hasNewShot = true;

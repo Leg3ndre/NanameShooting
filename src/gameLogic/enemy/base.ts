@@ -29,6 +29,7 @@ class EnemyBase implements IEnemy {
   hasNewShot = false;
   shotList: Shot[] = [];
 
+  private shotColor = 0xe0e0e0;
   private SHOOT_INTERVAL = CONST.FPS / 6;
   private SHOOT_SPEED = 4.0;
 
@@ -92,7 +93,7 @@ class EnemyBase implements IEnemy {
     shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.x = -Math.abs(shotVelocity.x);
     shotVelocity.add(this.velocity);
-    return new Shot(this.position, shotVelocity);
+    return new Shot(this.position, shotVelocity, this.shotColor);
   }
 
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {

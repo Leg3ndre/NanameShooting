@@ -5,15 +5,15 @@ class Shot {
   position;
   velocity;
 
-  private VELOCITY_INTENSITY = 4.0;
-
   private color = 0xffffff;
-  private material = new THREE.MeshBasicMaterial({ color: this.color });
+  private material;
   private graphics;
 
-  constructor(position: THREE.Vector3, velocity: THREE.Vector3) {
+  constructor(position: THREE.Vector3, velocity: THREE.Vector3, color: number) {
     this.position = position.clone();
     this.velocity = velocity.clone();
+    this.color = color;
+    this.material = new THREE.MeshBasicMaterial({ color: this.color })
     this.graphics = this.buildGraphics();
   }
 
