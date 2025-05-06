@@ -16,6 +16,7 @@ class Player {
   velocity = 8;
   position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
+  score = 0;
   hasNewShot = false;
   shotList: Shot[] = [];
 
@@ -40,6 +41,11 @@ class Player {
     this.shoot(keysPressed);
     for (const shot of this.shotList) {
       shot.tick();
+      for (const enemy of enemyList) {
+        if (shot.isAttacking(enemy.position, enemy.radius)) {
+          this.score++;
+        }
+      }
     }
 
     this.processDameged(enemyList);

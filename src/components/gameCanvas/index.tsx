@@ -10,10 +10,11 @@ import EnemyManager from '@/gameLogic/enemyManager';
 type Props = {
   width: number;
   height: number;
-  playerLife: Function;
+  setPlayerLife: Function;
+  setScore: Function;
 }
 
-const GameCanvas = ({ width, height, playerLife }: Props) => {
+const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   let keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
@@ -48,7 +49,8 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
         scene.remove(player.shotList[0].graphics);
         player.removeDeadShot();
       }
-      playerLife(player.life);
+      setPlayerLife(player.life);
+      setScore(player.score);
       enemies.tick(player.shotList);
       renderer.render(scene, camera);
     });
