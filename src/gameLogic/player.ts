@@ -11,6 +11,7 @@ const MAX_I_FRAME = 0.5 * CONST.FPS;
 
 class Player {
   graphics;
+
   radius = 15;
   velocity = 8;
   position: THREE.Vector3;
@@ -18,7 +19,7 @@ class Player {
   hasNewShot = false;
   shotList: Shot[] = [];
 
-  private shotColor = 0xd0d000;
+  private SHOT_COLOR = 0xd0d000;
   private SHOOT_INTERVAL = CONST.FPS / 4;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
@@ -79,7 +80,7 @@ class Player {
     }
 
     if (keysPressed[' '] || keysPressed['Enter']) {
-      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.shotColor);
+      const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.SHOT_COLOR);
       this.shotList.push(newShot);
 
       this.hasNewShot = true;

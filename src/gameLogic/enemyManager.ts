@@ -33,7 +33,7 @@ class EnemyManager {
     for (let enemy of this.list) {
       enemy.tick();
       if (enemy.hasNewShot && enemy.shotList.length > 0) {
-        this.graphics.add(enemy.shotList.at(-1)!.getGraphics());
+        this.graphics.add(enemy.shotList.at(-1)!.graphics);
       }
     }
     this.removeDeadEnemies();
@@ -50,7 +50,7 @@ class EnemyManager {
       if (!enemy.isAlive) {
         this.graphics.remove(enemy.graphics);
         for (const shot of enemy.shotList) {
-          this.graphics.remove(shot.getGraphics());
+          this.graphics.remove(shot.graphics);
         }
         enemy.dispose();
       }

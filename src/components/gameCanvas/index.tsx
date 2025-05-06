@@ -42,7 +42,7 @@ const GameCanvas = ({ width, height, playerLife }: Props) => {
       field.tick();
       player.tick(keysPressed, enemies.list);
       if (player.hasNewShot && player.shotList.length > 0) {
-        scene.add(player.shotList.at(-1)!.getGraphics());
+        scene.add(player.shotList.at(-1)!.graphics);
       }
       playerLife(player.life);
       enemies.tick();

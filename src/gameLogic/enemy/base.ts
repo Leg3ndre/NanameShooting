@@ -24,6 +24,7 @@ export interface IEnemy {
 
 class EnemyBase implements IEnemy {
   graphics;
+
   radius = 40;
   position;
   velocity;
@@ -69,7 +70,7 @@ class EnemyBase implements IEnemy {
 
     const newShot = this.buildNewShot();
     this.shotList.push(newShot);
-    this.graphics.add(newShot.getGraphics());
+    this.graphics.add(newShot.graphics);
     this.hasNewShot = true;
   }
 
