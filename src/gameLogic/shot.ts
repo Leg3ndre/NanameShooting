@@ -5,21 +5,20 @@ class Shot {
   position;
   velocity;
 
-  private color = 0xffffff;
   private material;
   private graphics;
 
   constructor(position: THREE.Vector3, velocity: THREE.Vector3, color: number) {
-    this.position = position.clone();
-    this.velocity = velocity.clone();
-    this.color = color;
-    this.material = new THREE.MeshBasicMaterial({ color: this.color })
+    this.material = new THREE.MeshBasicMaterial({ color: color })
     this.graphics = this.buildGraphics();
+    Object.assign(this.graphics.position, position.clone());
+
+    this.position = this.graphics.position;
+    this.velocity = velocity.clone();
   }
 
   tick(): void {
     this.position.add(this.velocity);
-    Object.assign(this.graphics.position, this.position);
   }
 
   getGraphics(): THREE.Mesh {

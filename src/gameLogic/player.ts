@@ -26,8 +26,8 @@ class Player {
   private graphics;
 
   constructor() {
-    this.position = new THREE.Vector3(0, 0, 0);
     this.graphics = this.buildGraphics();
+    this.position = this.graphics.position;
   }
 
   tick(
@@ -35,7 +35,6 @@ class Player {
     enemyList: IEnemy[],
   ): void {
     this.updatePosition(keysPressed);
-    Object.assign(this.graphics.position, this.position);
 
     this.shoot(keysPressed);
     for (const shot of this.shotList) {
@@ -47,26 +46,27 @@ class Player {
   }
 
   private updatePosition(keysPressed: { [index: string]: boolean }) {
+    let position = this.position;
     // 上下 (z-direction)
     if (keysPressed['w'] || keysPressed['ArrowUp']) {
-      this.position.z = Math.min(this.position.z + this.velocity, HEIGHT);
+      position.z = Math.min(position.z + this.velocity, HEIGHT);
     }
     if (keysPressed['s'] || keysPressed['ArrowDown']) {
-      this.position.z = Math.max(this.position.z - this.velocity, -HEIGHT);
+      position.z = Math.max(position.z - this.velocity, -HEIGHT);
     }
     // 左右 (y-direction)
     if (keysPressed['a'] || keysPressed['ArrowLeft']) {
-      this.position.y = Math.min(this.position.y + this.velocity, WIDTH);
+      position.y = Math.min(position.y + this.velocity, WIDTH);
     }
     if (keysPressed['d'] || keysPressed['ArrowRight']) {
-      this.position.y = Math.max(this.position.y - this.velocity, -WIDTH);
+      position.y = Math.max(position.y - this.velocity, -WIDTH);
     }
     // 前後 (x-direction)
     if (keysPressed['e'] || keysPressed['z']) {
-      this.position.x = Math.min(this.position.x + this.velocity, SIGHT_RANGE);
+      position.x = Math.min(position.x + this.velocity, SIGHT_RANGE);
     }
     if (keysPressed['x'] || keysPressed['Shift']) {
-      this.position.x = Math.max(this.position.x - this.velocity, -SIGHT_RANGE);
+      position.x = Math.max(position.x - this.velocity, -SIGHT_RANGE);
     }
   }
 
@@ -77,7 +77,6 @@ class Player {
       this.restSFrame--;
       return;
     }
-    console.log(keysPressed);
 
     if (keysPressed[' '] || keysPressed['Enter']) {
       const newShot = new Shot(this.position, new THREE.Vector3(10, 0, 0), this.shotColor);

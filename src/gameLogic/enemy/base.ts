@@ -38,14 +38,15 @@ class EnemyBase implements IEnemy {
   private graphics;
 
   constructor() {
-    this.position = new THREE.Vector3(
+    this.graphics = this.buildGraphics();
+    Object.assign(this.graphics.position, new THREE.Vector3(
       MAX_X,
       (Math.random() * 2.0 - 1.0) * MAX_Y,
       (Math.random() * 2.0 - 1.0) * MAX_Z,
-    );
+    ));
+
+    this.position = this.graphics.position;
     this.velocity = new THREE.Vector3(-4, 0, 0);
-    this.graphics = this.buildGraphics();
-    Object.assign(this.graphics.position, this.position);
   }
 
   tick(): void {
@@ -57,8 +58,6 @@ class EnemyBase implements IEnemy {
     }
 
     this.position.add(this.velocity);
-    Object.assign(this.graphics.position, this.position);
-
     if (this.position.x < MIN_X) this.isAlive = false;
   }
 
