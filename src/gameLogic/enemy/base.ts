@@ -8,6 +8,7 @@ const MAX_X = CONST.SIGHT_RANGE;
 const MIN_X = -CONST.SIGHT_RANGE * 2;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
+const PERIOD_BEFORE_DEAD = CONST.FPS / 2;
 
 export interface IEnemy {
   graphics: THREE.Group;
@@ -37,6 +38,7 @@ class EnemyBase implements IEnemy {
   private SHOOT_SPEED = 4.0;
 
   private count = 0;
+  private countBeforeDead = 0;
   private builder;
 
   constructor() {
@@ -53,6 +55,8 @@ class EnemyBase implements IEnemy {
   }
 
   tick(playerShots: PlayerShots): void {
+    if (this.isShotDown) return this.tickBeforeDead();
+
     this.count++;
 
     this.position.add(this.velocity);
@@ -60,11 +64,22 @@ class EnemyBase implements IEnemy {
 
     if (playerShots.isAttacking(this.position, this.radius)) {
       this.isShotDown = true;
-      this.isAlive = false;
     }
   }
 
+  tickBeforeDead(): void {
+    this.countBeforeDead++;
+
+    const deadActionSpeed = 1;
+    this.position.x += deadActionSpeed;
+    this.position.z -= deadActionSpeed * this.countBeforeDead;
+    this.builder.doDeadAction();
+
+    if (this.countBeforeDead >= PERIOD_BEFORE_DEAD) this.isAlive = false;
+  }
+
   shoot(): Shot | null {
+    if (!this.isAlive || this.isShotDown) return null;
     if (this.count % this.SHOOT_INTERVAL != 0) return null;
 
     return this.buildNewShot();
@@ -79,6 +94,8 @@ class EnemyBase implements IEnemy {
   }
 
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean {
+    if (!this.isAlive) return false;
+
     const radius = this.radius + pRadius;
     const diffVec = this.position.clone().sub(pPosition);
     return (Math.abs(diffVec.x) < radius && Math.abs(diffVec.y) < radius && Math.abs(diffVec.z) < radius);

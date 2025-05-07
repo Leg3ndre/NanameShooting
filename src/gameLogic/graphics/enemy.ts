@@ -15,6 +15,12 @@ class EnemyGraphics {
     return this.group;
   }
 
+  doDeadAction(): void {
+    const deadActionSpeed = 0.4;
+    this.group.rotation.x += deadActionSpeed;
+    this.group.rotation.z += deadActionSpeed;
+  }
+
   dispose(): void {
     for (let mesh of this.group.children) {
       ((mesh as THREE.Mesh).material as THREE.MeshBasicMaterial).dispose();
