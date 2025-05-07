@@ -15,6 +15,7 @@ export interface IEnemy {
   velocity: THREE.Vector3;
   position: THREE.Vector3;
   isAlive: boolean;
+  isShotDown: boolean;
 
   tick(playerShots: PlayerShots): void;
   shoot(): Shot | null;
@@ -29,6 +30,7 @@ class EnemyBase implements IEnemy {
   position;
   velocity;
   isAlive = true;
+  isShotDown = false;
 
   private SHOT_COLOR = 0xe0e0e0;
   private SHOOT_INTERVAL = CONST.FPS / 6;
@@ -57,6 +59,7 @@ class EnemyBase implements IEnemy {
     if (this.position.x < MIN_X) this.isAlive = false;
 
     if (playerShots.isAttacking(this.position, this.radius)) {
+      this.isShotDown = true;
       this.isAlive = false;
     }
   }

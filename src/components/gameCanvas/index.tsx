@@ -15,6 +15,7 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
+  let score = 0;
   let keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
@@ -44,8 +45,8 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       field.tick();
       player.tick(keysPressed, enemies.list, enemies.shotList);
       setPlayerLife(player.life);
-      setScore(player.score);
       enemies.tick(player.shotList);
+      setScore(score += enemies.countShotDown);
       renderer.render(scene, camera);
     });
   }, []);

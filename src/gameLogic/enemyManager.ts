@@ -9,6 +9,7 @@ class EnemyManager {
   graphics;
   list: IEnemy[] = [];
   shotList: Shot[] = [];
+  countShotDown = 0;
 
   private count = 0;
 
@@ -56,6 +57,8 @@ class EnemyManager {
   }
 
   private removeDeadEnemies() {
+    this.countShotDown = this.list.filter((e) => !e.isAlive && e.isShotDown).length;
+
     for (const enemy of this.list) {
       if (!enemy.isAlive) {
         this.graphics.remove(enemy.graphics);

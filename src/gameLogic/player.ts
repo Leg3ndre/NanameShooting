@@ -17,7 +17,6 @@ class Player {
   velocity = 8;
   position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
-  score = 0;
   shotList = new PlayerShots;
 
   private SHOOT_INTERVAL = CONST.FPS / 4;
@@ -40,9 +39,6 @@ class Player {
 
     this.shoot(keysPressed);
     this.shotList.tick();
-    for (const enemy of enemyList) {
-      if (this.shotList.isAttacking(enemy.position, enemy.radius)) this.score++;
-    }
 
     this.processDameged(enemyList, enemyShotList);
     if (this.isInvincible()) this.restIFrame--;
