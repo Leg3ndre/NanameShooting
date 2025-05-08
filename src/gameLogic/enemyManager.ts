@@ -4,6 +4,9 @@ import { IEnemy } from './enemy/base';
 import EnemyBase from './enemy/base';
 import Shot from './shot';
 import PlayerShots from './playerShots';
+import EnemyRed from './enemy/red';
+import EnemyBlue from './enemy/blue';
+import EnemyGreen from './enemy/green';
 
 class EnemyManager {
   graphics;
@@ -19,20 +22,8 @@ class EnemyManager {
 
   tick(playerShots: PlayerShots): void {
     this.count++;
-    // spawn table
-    if (this.count <= CONST.FPS * 30) {
-      if (this.count % (CONST.FPS * 3) == 0) {
-        this.generate();
-      }
-    } else if (this.count <= CONST.FPS * 60) {
-      if (this.count % (CONST.FPS * 2) == 0) {
-        this.generate();
-      }
-    } else {
-      if (this.count % CONST.FPS == 0) {
-        this.generate();
-      }
-    }
+
+    if (this.canGenerate()) this.generate();
 
     for (let enemy of this.list) {
       enemy.tick(playerShots);
@@ -51,9 +42,30 @@ class EnemyManager {
   }
 
   private generate() {
-    const newEnemy = new EnemyBase;
+    let newEnemy;
+    const rand = Math.random() * 30000;
+    if (rand % 3 == 0) {
+      newEnemy = new EnemyRed;
+    } else if (rand % 3 == 1) {
+      newEnemy = new EnemyBlue;
+    } else {
+      newEnemy = new EnemyGreen;
+    }
     this.list.push(newEnemy);
     this.graphics.add(newEnemy.graphics);
+  }
+
+  private canGenerate() {
+    // spawn table
+    if (this.count <= CONST.FPS * 30) {
+      return (this.count % (CONST.FPS * 3) == 0);
+    } else if (this.count <= CONST.FPS * 60) {
+      return (this.count % (CONST.FPS * 2) == 0);
+    } else if (this.count <= CONST.FPS * 120) {
+      return (this.count % CONST.FPS == 0);
+    } else {
+      return (this.count % (CONST.FPS / 2) == 0);
+    }
   }
 
   private removeDeadEnemies() {
