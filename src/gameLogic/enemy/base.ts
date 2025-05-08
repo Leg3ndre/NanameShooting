@@ -34,7 +34,7 @@ class EnemyBase implements IEnemy {
   isShotDown = false;
 
   protected SHOT_COLOR = 0xe0e0e0;
-  protected SHOOT_INTERVAL = CONST.FPS / 6;
+  protected SHOOT_INTERVAL = CONST.FPS / 10;
   protected SHOOT_SPEED = 4.0;
 
   protected count = 0;
@@ -51,7 +51,7 @@ class EnemyBase implements IEnemy {
     ));
 
     this.position = this.graphics.position;
-    this.velocity = new THREE.Vector3(-4, 0, 0);
+    this.velocity = new THREE.Vector3(-3, 0, 0);
   }
 
   tick(playerShots: PlayerShots): void {
@@ -85,7 +85,7 @@ class EnemyBase implements IEnemy {
     return this.buildNewShot();
   }
 
-  private buildNewShot() {
+  protected buildNewShot() {
     let shotVelocity = new THREE.Vector3;
     shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.x = -Math.abs(shotVelocity.x);
