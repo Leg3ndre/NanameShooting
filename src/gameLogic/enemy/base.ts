@@ -33,13 +33,13 @@ class EnemyBase implements IEnemy {
   isAlive = true;
   isShotDown = false;
 
-  private SHOT_COLOR = 0xe0e0e0;
-  private SHOOT_INTERVAL = CONST.FPS / 6;
-  private SHOOT_SPEED = 4.0;
+  protected SHOT_COLOR = 0xe0e0e0;
+  protected SHOOT_INTERVAL = CONST.FPS / 6;
+  protected SHOOT_SPEED = 4.0;
 
-  private count = 0;
-  private countBeforeDead = 0;
-  private builder;
+  protected count = 0;
+  protected countBeforeDead = 0;
+  protected builder;
 
   constructor(color = 0xe0e0e0) {
     this.builder = new EnemyGraphics(color);

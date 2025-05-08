@@ -44,7 +44,6 @@ class EnemyManager {
   private generate() {
     let newEnemy;
     const rand = Math.floor((Math.random() * 30000));
-    console.log("generate", rand);
     if (rand % 3 == 0) {
       newEnemy = new EnemyRed;
     } else if (rand % 3 == 1) {
