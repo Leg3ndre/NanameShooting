@@ -41,8 +41,8 @@ class EnemyBase implements IEnemy {
   private countBeforeDead = 0;
   private builder;
 
-  constructor() {
-    this.builder = new EnemyGraphics;
+  constructor(color = 0xe0e0e0) {
+    this.builder = new EnemyGraphics(color);
     this.graphics = this.builder.buildGraphics(this.radius);
     Object.assign(this.graphics.position, new THREE.Vector3(
       MAX_X,

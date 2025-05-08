@@ -1,8 +1,13 @@
 import * as THREE from 'three';
 
 class EnemyGraphics {
-  private material = new THREE.MeshLambertMaterial({ color: 0xe0e0e0 });
-  private group = new THREE.Group;;
+  private material;
+  private group;
+
+  constructor(color: number) {
+    this.material = new THREE.MeshLambertMaterial({ color: color });
+    this.group = new THREE.Group;
+  }
 
   buildGraphics(radius: number): THREE.Group {
     const detail = 0;
