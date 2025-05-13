@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game';
 import Shot from '@/gameLogic/shot';
 import EnemyGraphics from '@/gameLogic/graphics/enemy';
-import PlayerShots from '../playerShots';
+import PlayerShots from '@/gameLogic/playerShots';
 
 const MAX_X = CONST.SIGHT_RANGE;
 const MIN_X = -CONST.SIGHT_RANGE * 2;
@@ -18,8 +18,8 @@ export interface IEnemy {
   isAlive: boolean;
   isShotDown: boolean;
 
-  tick(playerShots: PlayerShots): void;
-  shoot(): Shot | null;
+  tick(playerShots: PlayerShots, playerPosition?: THREE.Vector3): void;
+  shoot(playerPosition?: THREE.Vector3): Shot | null;
   isAttacking(pPosition: THREE.Vector3, pRadius: number): boolean;
   dispose(): void;
 }
@@ -54,7 +54,7 @@ class EnemyBase implements IEnemy {
     this.velocity = new THREE.Vector3(-3, 0, 0);
   }
 
-  tick(playerShots: PlayerShots): void {
+  tick(playerShots: PlayerShots, _playerPosition?: THREE.Vector3): void {
     if (this.isShotDown) return this.tickBeforeDead();
 
     this.count++;
@@ -78,14 +78,14 @@ class EnemyBase implements IEnemy {
     if (this.countBeforeDead >= PERIOD_BEFORE_DEAD) this.isAlive = false;
   }
 
-  shoot(): Shot | null {
+  shoot(playerPosition?: THREE.Vector3): Shot | null {
     if (!this.isAlive || this.isShotDown) return null;
     if (this.count % this.SHOOT_INTERVAL != 0) return null;
 
-    return this.buildNewShot();
+    return this.buildNewShot(playerPosition);
   }
 
-  protected buildNewShot() {
+  protected buildNewShot(_playerPosition?: THREE.Vector3) {
     let shotVelocity = new THREE.Vector3;
     shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.x = -Math.abs(shotVelocity.x);

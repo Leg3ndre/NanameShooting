@@ -20,14 +20,14 @@ class EnemyManager {
     this.graphics = this.buildGraphics();
   }
 
-  tick(playerShots: PlayerShots): void {
+  tick(playerShots: PlayerShots, playerPosition: THREE.Vector3): void {
     this.count++;
 
     if (this.canGenerate()) this.generate();
 
     for (let enemy of this.list) {
-      enemy.tick(playerShots);
-      const newShot: Shot | null = enemy.shoot();
+      enemy.tick(playerShots, playerPosition);
+      const newShot: Shot | null = enemy.shoot(playerPosition);
       if (newShot != null) {
         this.shotList.push(newShot);
         this.graphics.add(newShot.graphics);

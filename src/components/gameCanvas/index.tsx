@@ -45,7 +45,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       field.tick();
       player.tick(keysPressed, enemies.list, enemies.shotList);
       setPlayerLife(player.life);
-      enemies.tick(player.shotList);
+      enemies.tick(player.shotList, player.position);
       setScore(score += enemies.countShotDown);
       renderer.render(scene, camera);
     });
