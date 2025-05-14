@@ -25,7 +25,7 @@ class EnemyManager {
 
     if (this.canGenerate()) this.generate();
 
-    for (let enemy of this.list) {
+    for (const enemy of this.list) {
       enemy.tick(playerShots, playerPosition);
       const newShot: Shot | null = enemy.shoot(playerPosition);
       if (newShot != null) {

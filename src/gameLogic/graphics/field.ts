@@ -28,9 +28,9 @@ class FieldGraphics {
   }
 
   private buildSLines() {
-    let lines = [];
+    const lines = [];
     for (let i = 0; i <= 2 * WIDTH / MESH_SIZE; ++i) {
-      let geometry = new THREE.BufferGeometry();
+      const geometry = new THREE.BufferGeometry();
       geometry.setFromPoints(this.buildSLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
     }
@@ -38,9 +38,9 @@ class FieldGraphics {
   }
 
   private buildWLines() {
-    let lines = [];
+    const lines = [];
     for (let i = 0; i <= 2 * SIGHT_RANGE / MESH_SIZE; ++i) {
-      let geometry = new THREE.BufferGeometry();
+      const geometry = new THREE.BufferGeometry();
       geometry.setFromPoints(this.buildWLineEdges(i));
       lines.push(new THREE.Line(geometry, this.material));
     }
@@ -67,7 +67,7 @@ class FieldGraphics {
   }
 
   moveWLines(count: number): void {
-    for (let [i, line] of this.wLines.entries()) {
+    for (const [i, line] of this.wLines.entries()) {
       line.geometry.setFromPoints(this.buildWLineEdges(i, count));
     }
   }

@@ -13,7 +13,7 @@ class EnemyGreen extends EnemyBase {
 
   protected buildNewShot() {
     const theta = this.count * 0.01;
-    let shotVelocity = new THREE.Vector3(
+    const shotVelocity = new THREE.Vector3(
       -0.5,
       Math.sin(theta * 5) * Math.cos(theta),
       Math.sin(theta * 5) * Math.sin(theta),

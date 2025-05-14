@@ -45,7 +45,7 @@ class Player {
   }
 
   private updatePosition(keysPressed: { [index: string]: boolean }) {
-    let position = this.position;
+    const position = this.position;
     // 上下 (z-direction)
     if (keysPressed['w'] || keysPressed['ArrowUp']) position.z += this.velocity;
     if (keysPressed['s'] || keysPressed['ArrowDown']) position.z -= this.velocity;

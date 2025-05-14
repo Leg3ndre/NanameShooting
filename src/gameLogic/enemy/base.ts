@@ -86,7 +86,7 @@ class EnemyBase implements IEnemy {
   }
 
   protected buildNewShot(_playerPosition?: THREE.Vector3) {
-    let shotVelocity = new THREE.Vector3;
+    const shotVelocity = new THREE.Vector3;
     shotVelocity.randomDirection().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.x = -Math.abs(shotVelocity.x);
     shotVelocity.add(this.velocity);

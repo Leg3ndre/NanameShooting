@@ -13,7 +13,7 @@ class PlayerGraphics {
   }
 
   private buildWing() {
-    let geometry = new THREE.BufferGeometry();
+    const geometry = new THREE.BufferGeometry();
     geometry.setFromPoints(this.buildWingEdges());
     return new THREE.Line(geometry, this.material);
   }
@@ -30,7 +30,7 @@ class PlayerGraphics {
   }
 
   private buildBody() {
-    let geometry = new THREE.BufferGeometry();
+    const geometry = new THREE.BufferGeometry();
     geometry.setFromPoints(this.buildBodyEdges());
     return new THREE.Line(geometry, this.material);
   }
@@ -47,13 +47,13 @@ class PlayerGraphics {
   }
 
   colorNormal(): void {
-    for (let mesh of this.group.children) {
+    for (const mesh of this.group.children) {
       (mesh as THREE.Line).material = this.material;
     }
   }
 
   colorAttacked(): void {
-    for (let mesh of this.group.children) {
+    for (const mesh of this.group.children) {
       (mesh as THREE.Line).material = this.materialAttacked;
     }
   }

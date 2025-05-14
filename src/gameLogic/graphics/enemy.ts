@@ -27,7 +27,7 @@ class EnemyGraphics {
   }
 
   dispose(): void {
-    for (let mesh of this.group.children) {
+    for (const mesh of this.group.children) {
       ((mesh as THREE.Mesh).material as THREE.MeshBasicMaterial).dispose();
       (mesh as THREE.Mesh).geometry.dispose();
     }

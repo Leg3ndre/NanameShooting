@@ -10,13 +10,13 @@ import EnemyManager from '@/gameLogic/enemyManager';
 type Props = {
   width: number;
   height: number;
-  setPlayerLife: Function;
-  setScore: Function;
+  setPlayerLife: (life: number) => void;
+  setScore: (score: number) => void;
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   let score = 0;
-  let keysPressed: { [index: string]: boolean } = {};
+  const keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
   const enemies = new EnemyManager;

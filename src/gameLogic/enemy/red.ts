@@ -24,7 +24,7 @@ class EnemyRed extends EnemyBase {
   }
 
   protected buildNewShot(playerPosition: THREE.Vector3) {
-    let shotVelocity = new THREE.Vector3;
+    const shotVelocity = new THREE.Vector3;
     shotVelocity.x = -Math.abs(this.position.x - playerPosition.x);
     shotVelocity.y = -(this.position.y - playerPosition.y);
     shotVelocity.z = -(this.position.z - playerPosition.z);

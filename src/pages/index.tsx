@@ -11,7 +11,7 @@ const Home = () => {
     <>
       <h1>Naname Shooting</h1>
       <div className={styles.scores}>
-        <span id="pl-score" className={styles.pl_score}>PLAYER'S LIFE: {playerLife}</span>
+        <span id="pl-score" className={styles.pl_score}>PLAYER&apos;S LIFE: {playerLife}</span>
         <span id="en-score" className={styles.en_score}>KILL SCORE: {score}</span>
       </div>
       <GameCanvas
