@@ -1,5 +1,4 @@
 import * as THREE from 'three';
-import * as CONST from '@/constants/game'
 
 class PlayerGraphics {
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });

@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 import Keyboard from '../ui/keyboard';
 import animate from '@/gameLogic/animate';
@@ -15,7 +15,7 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
-  let score = 0;
+  const scoreRef = useRef(0);
   const keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
   const player = new Player;
@@ -46,10 +46,10 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       player.tick(keysPressed, enemies.list, enemies.shotList);
       setPlayerLife(player.life);
       enemies.tick(player.shotList, player.position);
-      setScore(score += enemies.countShotDown);
+      setScore(scoreRef.current += enemies.countShotDown);
       renderer.render(scene, camera);
     });
-  }, []);
+  });
 
   return (
     <>

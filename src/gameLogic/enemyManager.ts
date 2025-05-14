@@ -1,7 +1,6 @@
 import * as THREE from 'three';
 import * as CONST from '@/constants/game'
 import { IEnemy } from './enemy/base';
-import EnemyBase from './enemy/base';
 import Shot from './shot';
 import PlayerShots from './playerShots';
 import EnemyRed from './enemy/red';
