@@ -13,7 +13,7 @@ const Keyboard = ({ keysPressed }: Props) => {
       document.removeEventListener('keydown', handleKeyDown);
       document.removeEventListener('keyup', handleKeyUp);
     }
-  });
+  }, []);
 
   const handleKeyDown = (e: KeyboardEvent) => {
     keysPressed[e.key] = true;

@@ -21,27 +21,32 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const player = new Player;
   const enemies = new EnemyManager;
 
+  let renderer: THREE.WebGLRenderer | undefined;
+  const scene = new THREE.Scene();
+  const light = new THREE.HemisphereLight(0xffffff, 0x606060, 5.0);
+
+  const camera = new THREE.PerspectiveCamera(60, width / height);
+  camera.position.set(0, -800, 800);
+  camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+  scene.add(light);
+  scene.add(field.graphics);
+  scene.add(player.graphics);
+  scene.add(player.shotList.graphics);
+  scene.add(enemies.graphics);
+
   useEffect(() => {
-    const renderer = new THREE.WebGLRenderer({
+    renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
+  }, []);
 
-    const camera = new THREE.PerspectiveCamera(60, width / height);
-    camera.position.set(0, -800, 800);
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-
-    const light = new THREE.HemisphereLight(0xffffff, 0x606060, 5.0);
-
-    const scene = new THREE.Scene();
-    scene.add(light);
-    scene.add(field.graphics);
-    scene.add(player.graphics);
-    scene.add(player.shotList.graphics);
-    scene.add(enemies.graphics);
-
+  useEffect(() => {
     animate(() => {
+      if (renderer === undefined) return;
+
       field.tick();
       player.tick(keysPressed, enemies.list, enemies.shotList);
       setPlayerLife(player.life);
@@ -49,7 +54,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       setScore(scoreRef.current += enemies.countShotDown);
       renderer.render(scene, camera);
     });
-  });
+  }, []);
 
   return (
     <>
