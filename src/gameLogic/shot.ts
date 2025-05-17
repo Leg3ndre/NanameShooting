@@ -2,8 +2,12 @@ import * as THREE from 'three';
 import ShotGraphics from './graphics/shot';
 import * as CONST from '@/constants/game';
 
-const MAX_X = CONST.SIGHT_RANGE * 1.5;
-const MIN_X = -CONST.SIGHT_RANGE * 1.5;
+const MAX_X = CONST.SIGHT_RANGE;
+const MIN_X = -CONST.SIGHT_RANGE * 1.2;
+const MAX_Y = CONST.WIDTH * 2;
+const MIN_Y = -CONST.WIDTH * 2;
+const MAX_Z = CONST.HEIGHT * 2;
+const MIN_Z = -CONST.HEIGHT * 2;
 
 class Shot {
   graphics;
@@ -29,6 +33,10 @@ class Shot {
 
     if (this.position.x > MAX_X) this.isAlive = false;
     if (this.position.x < MIN_X) this.isAlive = false;
+    if (this.position.y > MAX_Y) this.isAlive = false;
+    if (this.position.y < MIN_Y) this.isAlive = false;
+    if (this.position.z > MAX_Z) this.isAlive = false;
+    if (this.position.z < MIN_Z) this.isAlive = false;
   }
 
   isAttacking(objPosition: THREE.Vector3, objRadius: number): boolean {
