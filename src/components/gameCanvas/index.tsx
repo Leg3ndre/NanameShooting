@@ -36,6 +36,11 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   scene.add(enemies.graphics);
 
   useEffect(() => {
+    // 上下キーでスクロールが発生しないように
+    document.body.addEventListener("keydown", (e) => e.preventDefault());
+  })
+
+  useEffect(() => {
     renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
     });
