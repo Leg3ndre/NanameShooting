@@ -23,7 +23,7 @@ const Home = () => {
       <div className={styles.desc}>
         <p className={styles.abstract}>
           固定視点の3Dシューティングゲームです。
-          プレイヤーから見て右上にカメラが固定されているため、上移動と右移動の区別は遠近感でがんばってください。
+          プレイヤーから見て右上にカメラが固定されているため、上移動と左移動の区別は遠近感でがんばってください。
         </p>
         <ul className={styles.playManual}>
           <li>画面右から次々現れる敵を倒し、スコアを稼いでください</li>
