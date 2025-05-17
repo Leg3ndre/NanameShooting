@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import ShotGraphics from './graphics/shot';
 import * as CONST from '@/constants/game';
 
-const MAX_X = CONST.SIGHT_RANGE * 2;
-const MIN_X = -CONST.SIGHT_RANGE * 2;
+const MAX_X = CONST.SIGHT_RANGE * 1.5;
+const MIN_X = -CONST.SIGHT_RANGE * 1.5;
 
 class Shot {
   graphics;

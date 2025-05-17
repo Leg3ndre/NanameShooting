@@ -7,7 +7,7 @@ class EnemyGreen extends EnemyBase {
   constructor() {
     super(0x00e000);
     this.SHOT_COLOR = 0xd0ffd0;
-    this.SHOOT_INTERVAL = CONST.FPS / 12;
+    this.SHOOT_INTERVAL = CONST.FPS / 10;
     this.SHOOT_SPEED = 1.0;
   }
 

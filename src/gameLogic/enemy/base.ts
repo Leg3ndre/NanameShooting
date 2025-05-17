@@ -5,7 +5,7 @@ import EnemyGraphics from '@/gameLogic/graphics/enemy';
 import PlayerShots from '@/gameLogic/playerShots';
 
 const MAX_X = CONST.SIGHT_RANGE;
-const MIN_X = -CONST.SIGHT_RANGE * 2;
+const MIN_X = -CONST.SIGHT_RANGE * 1.5;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 const PERIOD_BEFORE_DEAD = CONST.FPS / 2;
@@ -34,7 +34,7 @@ class EnemyBase implements IEnemy {
   isShotDown = false;
 
   protected SHOT_COLOR = 0xe0e0e0;
-  protected SHOOT_INTERVAL = CONST.FPS / 10;
+  protected SHOOT_INTERVAL = CONST.FPS / 8;
   protected SHOOT_SPEED = 4.0;
 
   protected count = 0;
