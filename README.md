@@ -8,7 +8,12 @@ npm install
 ```
 and
 ```bash
+# development mode
 npm run dev
+
+# or production mode
+npm run build
+npm run start
 ```
 
 ## How to play
