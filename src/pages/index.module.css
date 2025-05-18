@@ -13,12 +13,3 @@
 .en_score{
   float:right;
 }
-
-.desc{
-  .abstract{
-    color: black;
-  }
-  .playManual{
-    color: black;
-  }
-}
