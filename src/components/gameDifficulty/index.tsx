@@ -1,26 +1,50 @@
 import * as THREE from 'three';
+import * as CONST from '@/constants/game';
 import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 
 type Props = {
-  // setDifficulty: (difficulty: number) => void;
+  difficulty: string;
+  setDifficulty: (difficulty: string) => void;
 }
 
-const GameDifficulty = ({  }: Props) => {
+const GameDifficulty = ({ difficulty, setDifficulty }: Props) => {
+  const radioButtons = [
+    {
+      label: "簡単モード（オブジェクトの影を表示）",
+      value: CONST.DIFFICULTY_EASY,
+    },
+    {
+      label: "普通モード",
+      value: CONST.DIFFICULTY_NORMAL,
+    },
+    {
+      label: "難関モード（遠近感をなくす）",
+      value: CONST.DIFFICULTY_DIFFICULT,
+    }
+  ];
+
+  const changeValue = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setDifficulty(e.target.value);
+  };
+
   return (
     <div className={styles.difficulty}>
-      <label>
-        <input type="radio" name="difficulty" />
-        簡単モード（オブジェクトの影を表示）
-      </label>
-      <label>
-        <input type="radio" name="difficulty" />
-        普通モード
-      </label>
-      <label>
-        <input type="radio" name="difficulty" />
-        難関モード（遠近感をなくす）
-      </label>
+      {
+        radioButtons.map((radio) => {
+          return(
+            <label key={radio.value}>
+              <input type="radio"
+                name="difficulty"
+                value={radio.value}
+                checked={radio.value == difficulty}
+                onChange={changeValue}
+              />
+              {radio.label}
+            </label>
+          );
+        })
+      }
     </div>
   );
 }

@@ -1,5 +1,6 @@
 import * as THREE from 'three';
-import { useEffect, useRef } from 'react';
+import * as CONST from '@/constants/game';
+import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import Keyboard from '../ui/keyboard';
 import animate from '@/gameLogic/animate';
@@ -16,6 +17,7 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
+  const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
   const scoreRef = useRef(0);
   const keysPressed: { [index: string]: boolean } = {};
   const field = new Field;
@@ -66,7 +68,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     <>
       <Keyboard keysPressed={keysPressed} />
       <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
-      <GameDifficulty />
+      <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
     </>
   );
 }
