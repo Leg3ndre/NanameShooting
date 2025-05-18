@@ -1,10 +1,11 @@
 import * as THREE from 'three';
+import * as CONST from '@/constants/game';
 import Shot from './shot';
 
 class PlayerShots {
   graphics;
   list: Shot[] = [];
-  velocity = 10;
+  velocity = 600 / CONST.FPS;
 
   private SHOT_COLOR = 0xd0d000;
 

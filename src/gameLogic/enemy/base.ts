@@ -34,8 +34,8 @@ class EnemyBase implements IEnemy {
   isShotDown = false;
 
   protected SHOT_COLOR = 0xe0e0e0;
-  protected SHOOT_INTERVAL = CONST.FPS / 8;
-  protected SHOOT_SPEED = 4.0;
+  protected SHOOT_PER_SEC = 10;
+  protected SHOOT_SPEED = 240.0 / CONST.FPS;
 
   protected count = 0;
   protected countBeforeDead = 0;
@@ -51,7 +51,7 @@ class EnemyBase implements IEnemy {
     ));
 
     this.position = this.graphics.position;
-    this.velocity = new THREE.Vector3(-3, 0, 0);
+    this.velocity = new THREE.Vector3(-3.0, 0, 0).multiplyScalar(60.0 / CONST.FPS);
   }
 
   tick(playerShots: PlayerShots, _playerPosition?: THREE.Vector3): void {
@@ -70,7 +70,7 @@ class EnemyBase implements IEnemy {
   tickBeforeDead(): void {
     this.countBeforeDead++;
 
-    const deadActionSpeed = 1;
+    const deadActionSpeed = 60.0 / CONST.FPS;
     this.position.x += deadActionSpeed;
     this.position.z -= deadActionSpeed * this.countBeforeDead;
     this.builder.doDeadAction();
@@ -80,7 +80,7 @@ class EnemyBase implements IEnemy {
 
   shoot(playerPosition?: THREE.Vector3): Shot | null {
     if (!this.isAlive || this.isShotDown) return null;
-    if (this.count % this.SHOOT_INTERVAL != 0) return null;
+    if ((this.count * this.SHOOT_PER_SEC) % CONST.FPS != 0) return null;
 
     return this.buildNewShot(playerPosition);
   }

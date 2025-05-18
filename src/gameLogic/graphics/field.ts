@@ -58,7 +58,7 @@ class FieldGraphics {
 
   private buildWLineEdges(i: number, count: number = 0) {
     const x = MESH_SIZE * i - SIGHT_RANGE;
-    const diffX = count % MESH_SIZE;
+    const diffX = (count * (60 / CONST.FPS)) % MESH_SIZE;
     const z = -HEIGHT;
     return [
       new THREE.Vector3(x - diffX, -WIDTH, z),

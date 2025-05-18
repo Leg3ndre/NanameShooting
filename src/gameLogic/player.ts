@@ -1,5 +1,5 @@
 import * as THREE from 'three';
-import * as CONST from '@/constants/game'
+import * as CONST from '@/constants/game';
 import { IEnemy } from './enemy/base';
 import Shot from './shot';
 import PlayerGraphics from './graphics/player';
@@ -14,12 +14,12 @@ class Player {
   graphics;
 
   radius = 15;
-  velocity = 8;
+  velocity = 480 / CONST.FPS;
   position: THREE.Vector3;
   life = CONST.INITIAL_PLAYER_LIFE;
   shotList = new PlayerShots;
 
-  private SHOOT_INTERVAL = CONST.FPS / 4;
+  private SHOOT_PER_SEC = 3;
   private restSFrame = 0; // shooting frame
   private restIFrame = 0; // invincibility frame
   private builder;
@@ -67,13 +67,13 @@ class Player {
 
   private shoot(keysPressed: { [index: string]: boolean }) {
     if (this.restSFrame > 0) {
-      this.restSFrame--;
+      this.restSFrame -= 1;
       return;
     }
 
     if (keysPressed[' '] || keysPressed['Enter']) {
       this.shotList.generate(this.position);
-      this.restSFrame = this.SHOOT_INTERVAL;
+      this.restSFrame = CONST.FPS / this.SHOOT_PER_SEC;
     }
   }
 
