@@ -4,7 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import Keyboard from '@/components/ui/keyboard';
 import GameDifficulty from '@/components/gameDifficulty';
-import animate from '@/gameLogic/animate';
+import animate from '@/hooks/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
@@ -51,18 +51,18 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     renderer.setSize(width, height);
   }, []);
 
-  useEffect(() => {
-    animate(() => {
-      if (renderer === undefined) return;
+  const animateCallback = () => {
+    if (renderer === undefined) return;
 
-      field.tick();
-      player.tick(keysPressed, enemies.list, enemies.shotList);
-      setPlayerLife(player.life);
-      enemies.tick(player.shotList, player.position);
-      setScore(scoreRef.current += enemies.countShotDown);
-      renderer.render(scene, camera);
-    });
-  }, []);
+    field.tick();
+    player.tick(keysPressed, enemies.list, enemies.shotList);
+    setPlayerLife(player.life);
+    enemies.tick(player.shotList, player.position);
+    setScore(scoreRef.current += enemies.countShotDown);
+    renderer.render(scene, camera);
+  };
+
+  animate(animateCallback);
 
   return (
     <>
