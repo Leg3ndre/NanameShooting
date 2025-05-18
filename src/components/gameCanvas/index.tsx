@@ -2,12 +2,12 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
-import Keyboard from '../ui/keyboard';
+import Keyboard from '@/components/ui/keyboard';
+import GameDifficulty from '@/components/gameDifficulty';
 import animate from '@/gameLogic/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
-import GameDifficulty from '../gameDifficulty';
 
 type Props = {
   width: number;

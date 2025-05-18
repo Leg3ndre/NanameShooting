@@ -1,6 +1,4 @@
-import * as THREE from 'three';
 import * as CONST from '@/constants/game';
-import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 
 type Props = {
@@ -20,7 +18,7 @@ const GameDifficulty = ({ difficulty, setDifficulty }: Props) => {
     },
     {
       label: "難関モード（遠近感をなくす）",
-      value: CONST.DIFFICULTY_DIFFICULT,
+      value: CONST.DIFFICULTY_HARD,
     }
   ];
 
