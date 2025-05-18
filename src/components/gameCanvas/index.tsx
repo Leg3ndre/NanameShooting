@@ -6,6 +6,7 @@ import animate from '@/gameLogic/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
+import GameDifficulty from '../gameDifficulty';
 
 type Props = {
   width: number;
@@ -65,6 +66,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     <>
       <Keyboard keysPressed={keysPressed} />
       <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
+      <GameDifficulty />
     </>
   );
 }
