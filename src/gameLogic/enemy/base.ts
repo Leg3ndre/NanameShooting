@@ -12,6 +12,7 @@ const PERIOD_BEFORE_DEAD = CONST.FPS / 2;
 
 export interface IEnemy {
   graphics: THREE.Group;
+  shadowGraphics: THREE.Group;
   radius: number;
   velocity: THREE.Vector3;
   position: THREE.Vector3;
@@ -26,6 +27,7 @@ export interface IEnemy {
 
 class EnemyBase implements IEnemy {
   graphics;
+  shadowGraphics;
 
   radius = 40;
   position;
@@ -44,6 +46,7 @@ class EnemyBase implements IEnemy {
   constructor(color = 0xe0e0e0) {
     this.builder = new EnemyGraphics(color);
     this.graphics = this.builder.buildGraphics(this.radius);
+    this.shadowGraphics = this.builder.buildShadow(this.radius);
     Object.assign(this.graphics.position, new THREE.Vector3(
       MAX_X,
       (Math.random() * 2.0 - 1.0) * MAX_Y,
@@ -61,6 +64,10 @@ class EnemyBase implements IEnemy {
 
     this.position.add(this.velocity);
     if (this.position.x < MIN_X) this.isAlive = false;
+
+    this.shadowGraphics.position.x = this.position.x;
+    this.shadowGraphics.position.y = this.position.y;
+    this.shadowGraphics.position.z = -CONST.HEIGHT;
 
     if (playerShots.isAttacking(this.position, this.radius)) {
       this.isShotDown = true;

@@ -22,8 +22,10 @@ class GameScene extends THREE.Scene {
   changeDifficulty(player: Player, enemies: EnemyManager, difficulty: string): void {
     if (difficulty == CONST.DIFFICULTY_EASY) {
       this.add(player.shadowGraphics);
+      this.add(enemies.shadowGraphics);
     } else {
       this.remove(player.shadowGraphics);
+      this.remove(enemies.shadowGraphics);
     }
   }
 }

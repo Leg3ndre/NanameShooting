@@ -25,6 +25,20 @@ class EnemyGraphics {
     this.group.rotation.x += deadActionSpeed;
     this.group.rotation.z += deadActionSpeed;
   }
+  
+  buildShadow(radius: number): THREE.Group {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setFromPoints([
+      new THREE.Vector3(radius * Math.cos(1 * Math.PI / 3), radius * Math.sin(1 * Math.PI / 3), 0),
+      new THREE.Vector3(radius * Math.cos(3 * Math.PI / 3), radius * Math.sin(3 * Math.PI / 3), 0),
+      new THREE.Vector3(radius * Math.cos(5 * Math.PI / 3), radius * Math.sin(5 * Math.PI / 3), 0),
+    ]);
+    const shadowMaterial = new THREE.LineBasicMaterial({ color: 0xb0b0b0 });
+
+    const shadow = new THREE.Group();
+    shadow.add(new THREE.Mesh(geometry, shadowMaterial));
+    return shadow;
+  }
 
   dispose(): void {
     for (const mesh of this.group.children) {

@@ -9,6 +9,7 @@ import EnemyGreen from './enemy/green';
 
 class EnemyManager {
   graphics;
+  shadowGraphics;
   list: IEnemy[] = [];
   shotList: Shot[] = [];
   countShotDown = 0;
@@ -17,6 +18,7 @@ class EnemyManager {
 
   constructor() {
     this.graphics = this.buildGraphics();
+    this.shadowGraphics = this.buildGraphics();
   }
 
   tick(playerShots: PlayerShots, playerPosition: THREE.Vector3): void {
@@ -52,6 +54,7 @@ class EnemyManager {
     }
     this.list.push(newEnemy);
     this.graphics.add(newEnemy.graphics);
+    this.shadowGraphics.add(newEnemy.shadowGraphics);
   }
 
   private canGenerate() {
@@ -73,6 +76,7 @@ class EnemyManager {
     for (const enemy of this.list) {
       if (!enemy.isAlive) {
         this.graphics.remove(enemy.graphics);
+        this.shadowGraphics.remove(enemy.shadowGraphics);
         enemy.dispose();
       }
     }
