@@ -5,6 +5,7 @@ class PlayerGraphics {
   private materialAttacked = new THREE.LineBasicMaterial({ color: 0xffffff });
   private group = new THREE.Group();
   private r = 20;
+  private shadowColor = 0x909090;
 
   buildGraphics() {
     this.group.add(this.buildWing());
@@ -61,7 +62,7 @@ class PlayerGraphics {
   buildShadow(): THREE.Group {
     const geometry = new THREE.BufferGeometry();
     geometry.setFromPoints(this.buildWingEdges());
-    const shadowMaterial = new THREE.LineBasicMaterial({ color: 0xb0b0b0 });
+    const shadowMaterial = new THREE.LineBasicMaterial({ color: this.shadowColor });
 
     const shadow = new THREE.Group();
     shadow.add(new THREE.Mesh(geometry, shadowMaterial));

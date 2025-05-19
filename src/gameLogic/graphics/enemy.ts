@@ -3,6 +3,7 @@ import * as THREE from 'three';
 class EnemyGraphics {
   private material;
   private group;
+  private shadowColor = 0x909090;
 
   constructor(color: number) {
     this.material = new THREE.MeshLambertMaterial({ color: color });
@@ -33,7 +34,7 @@ class EnemyGraphics {
       new THREE.Vector3(radius * Math.cos(3 * Math.PI / 3), radius * Math.sin(3 * Math.PI / 3), 0),
       new THREE.Vector3(radius * Math.cos(5 * Math.PI / 3), radius * Math.sin(5 * Math.PI / 3), 0),
     ]);
-    const shadowMaterial = new THREE.LineBasicMaterial({ color: 0xb0b0b0 });
+    const shadowMaterial = new THREE.LineBasicMaterial({ color: this.shadowColor });
 
     const shadow = new THREE.Group();
     shadow.add(new THREE.Mesh(geometry, shadowMaterial));
