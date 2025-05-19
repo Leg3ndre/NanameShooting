@@ -8,6 +8,7 @@ import animate from '@/hooks/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
+import GameCamera from '@/gameLogic/camera';
 
 type Props = {
   width: number;
@@ -32,16 +33,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   scene.current.add(player.current.shotList.graphics);
   scene.current.add(enemies.current.graphics);
 
-  const camera = new THREE.PerspectiveCamera(60, width / height);
-  camera.position.set(0, -800, 800);
-  if (difficulty == CONST.DIFFICULTY_HARD) {
-    camera.fov = 20;
-    camera.far = 6000;
-    camera.updateProjectionMatrix();
-    camera.position.set(0, -2500, 2500);
-  }
-  camera.lookAt(new THREE.Vector3(0, 0, 0));
-
+  const camera = new GameCamera(width, height, difficulty);
   let renderer: THREE.WebGLRenderer | undefined;
   useEffect(() => {
     renderer = new THREE.WebGLRenderer({
