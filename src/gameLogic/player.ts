@@ -12,6 +12,7 @@ const MAX_I_FRAME = 0.5 * CONST.FPS;
 
 class Player {
   graphics;
+  shadowGraphics;
 
   radius = 15;
   velocity = 480 / CONST.FPS;
@@ -27,6 +28,7 @@ class Player {
   constructor() {
     this.builder = new PlayerGraphics;
     this.graphics = this.builder.buildGraphics();
+    this.shadowGraphics = this.builder.buildShadow();
     this.position = this.graphics.position;
   }
 
@@ -57,6 +59,10 @@ class Player {
     if (keysPressed['q'] || keysPressed['z']) position.x -= this.velocity;
 
     this.regularizePosition();
+
+    this.shadowGraphics.position.x = position.x;
+    this.shadowGraphics.position.y = position.y;
+    this.shadowGraphics.position.z = -HEIGHT;
   }
 
   private regularizePosition() {

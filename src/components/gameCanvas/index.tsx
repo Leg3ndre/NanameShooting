@@ -9,6 +9,7 @@ import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
 import GameCamera from '@/gameLogic/camera';
+import GameScene from '@/gameLogic/scene';
 
 type Props = {
   width: number;
@@ -26,12 +27,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const keysPressed = useKeyboardEffect();
 
   const light = useRef(new THREE.HemisphereLight(0xffffff, 0x606060, 5.0));
-  const scene = useRef(new THREE.Scene);
-  scene.current.add(light.current);
-  scene.current.add(field.current.graphics);
-  scene.current.add(player.current.graphics);
-  scene.current.add(player.current.shotList.graphics);
-  scene.current.add(enemies.current.graphics);
+  const scene = useRef(new GameScene(player.current, enemies.current, difficulty));
 
   const camera = useRef(new GameCamera(width, height, difficulty));
   const renderer = useRef<THREE.WebGLRenderer | undefined>(undefined);
@@ -48,6 +44,12 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     // 上下キーでスクロールが発生しないように
     document.body.addEventListener("keydown", (e) => e.preventDefault());
   }, []);
+
+  useEffect(() => {
+    scene.current = new GameScene(player.current, enemies.current, difficulty);
+    scene.current.add(light.current);
+    scene.current.add(field.current.graphics);
+  }, [difficulty]);
 
   useEffect(() => {
     camera.current = new GameCamera(width, height, difficulty);

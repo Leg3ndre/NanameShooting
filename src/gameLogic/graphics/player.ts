@@ -4,6 +4,7 @@ class PlayerGraphics {
   private material = new THREE.LineBasicMaterial({ color: 0xff0000 });
   private materialAttacked = new THREE.LineBasicMaterial({ color: 0xffffff });
   private group = new THREE.Group();
+  private r = 20;
 
   buildGraphics() {
     this.group.add(this.buildWing());
@@ -18,7 +19,7 @@ class PlayerGraphics {
   }
 
   private buildWingEdges() {
-    const r = 20;
+    const r = this.r;
     const z = 0;
     return [
       new THREE.Vector3(r * Math.cos(0.0), r * Math.sin(0.0), z),
@@ -35,7 +36,7 @@ class PlayerGraphics {
   }
 
   private buildBodyEdges() {
-    const r = 20;
+    const r = this.r;
     const y = 0;
     return [
       new THREE.Vector3(r * Math.cos(0.0), y, r * Math.sin(0.0)),
@@ -55,6 +56,16 @@ class PlayerGraphics {
     for (const mesh of this.group.children) {
       (mesh as THREE.Line).material = this.materialAttacked;
     }
+  }
+
+  buildShadow(): THREE.Group {
+    const geometry = new THREE.BufferGeometry();
+    geometry.setFromPoints(this.buildWingEdges());
+    const shadowMaterial = new THREE.LineBasicMaterial({ color: 0xb0b0b0 });
+
+    const shadow = new THREE.Group();
+    shadow.add(new THREE.Mesh(geometry, shadowMaterial));
+    return shadow;
   }
 }
 
