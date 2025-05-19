@@ -32,9 +32,14 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   scene.current.add(player.current.shotList.graphics);
   scene.current.add(enemies.current.graphics);
 
-  const fov = (difficulty == CONST.DIFFICULTY_HARD) ? 10 : 60
-  const camera = new THREE.PerspectiveCamera(fov, width / height);
+  const camera = new THREE.PerspectiveCamera(60, width / height);
   camera.position.set(0, -800, 800);
+  if (difficulty == CONST.DIFFICULTY_HARD) {
+    camera.fov = 20;
+    camera.far = 6000;
+    camera.updateProjectionMatrix();
+    camera.position.set(0, -2500, 2500);
+  }
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
   let renderer: THREE.WebGLRenderer | undefined;
