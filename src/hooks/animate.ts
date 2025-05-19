@@ -18,7 +18,7 @@ const animate = (callback: () => void) => {
 
   useEffect(() => {
     frameIdRef.current = requestAnimationFrame(tick);
-    // return () => cancelAnimationFrame(frameIdRef.current);
+    return () => cancelAnimationFrame(frameIdRef.current);
   }, [tick]);
 }
 

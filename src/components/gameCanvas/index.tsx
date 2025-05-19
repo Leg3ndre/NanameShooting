@@ -17,56 +17,60 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
+  const keysPressed = useRef({});
+
   const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
   const scoreRef = useRef(0);
-  const keysPressed: { [index: string]: boolean } = {};
-  const field = new Field;
-  const player = new Player;
-  const enemies = new EnemyManager;
+  const field = useRef(new Field);
+  const player = useRef(new Player);
+  const enemies = useRef(new EnemyManager);
 
-  let renderer: THREE.WebGLRenderer | undefined;
-  const scene = new THREE.Scene();
-  const light = new THREE.HemisphereLight(0xffffff, 0x606060, 5.0);
+  const light = useRef(new THREE.HemisphereLight(0xffffff, 0x606060, 5.0));
+  const scene = useRef(new THREE.Scene);
+  scene.current.add(light.current);
+  scene.current.add(field.current.graphics);
+  scene.current.add(player.current.graphics);
+  scene.current.add(player.current.shotList.graphics);
+  scene.current.add(enemies.current.graphics);
 
-  const camera = new THREE.PerspectiveCamera(60, width / height);
+  const fov = (difficulty == CONST.DIFFICULTY_HARD) ? 10 : 60
+  const camera = new THREE.PerspectiveCamera(fov, width / height);
   camera.position.set(0, -800, 800);
   camera.lookAt(new THREE.Vector3(0, 0, 0));
 
-  scene.add(light);
-  scene.add(field.graphics);
-  scene.add(player.graphics);
-  scene.add(player.shotList.graphics);
-  scene.add(enemies.graphics);
-
-  useEffect(() => {
-    // 上下キーでスクロールが発生しないように
-    document.body.addEventListener("keydown", (e) => e.preventDefault());
-  })
-
+  let renderer: THREE.WebGLRenderer | undefined;
   useEffect(() => {
     renderer = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
     });
     renderer.setPixelRatio(window.devicePixelRatio);
     renderer.setSize(width, height);
+  });
+
+  useEffect(() => {
+    // 上下キーでスクロールが発生しないように
+    document.body.addEventListener("keydown", (e) => e.preventDefault());
   }, []);
 
   const animateCallback = () => {
-    if (renderer === undefined) return;
+    if (renderer === undefined) {
+      console.error("Cannot find renderer!!")
+      return;
+    }
 
-    field.tick();
-    player.tick(keysPressed, enemies.list, enemies.shotList);
-    setPlayerLife(player.life);
-    enemies.tick(player.shotList, player.position);
-    setScore(scoreRef.current += enemies.countShotDown);
-    renderer.render(scene, camera);
+    field.current.tick();
+    player.current.tick(keysPressed.current, enemies.current.list, enemies.current.shotList);
+    setPlayerLife(player.current.life);
+    enemies.current.tick(player.current.shotList, player.current.position);
+    setScore(scoreRef.current += enemies.current.countShotDown);
+    renderer.render(scene.current, camera);
   };
 
   animate(animateCallback);
 
   return (
     <>
-      <Keyboard keysPressed={keysPressed} />
+      <Keyboard keysPressed={keysPressed.current} />
       <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
     </>
