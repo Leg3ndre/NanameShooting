@@ -1,4 +1,4 @@
-export const FPS = 30.0;
+export const FPS = 60.0;
 export const CANVAS_W = 640;
 export const CANVAS_H = 480;
 
