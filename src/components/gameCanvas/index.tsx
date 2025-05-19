@@ -34,13 +34,13 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   scene.current.add(enemies.current.graphics);
 
   const camera = new GameCamera(width, height, difficulty);
-  let renderer: THREE.WebGLRenderer | undefined;
+  const renderer = useRef<THREE.WebGLRenderer | undefined>(undefined);
   useEffect(() => {
-    renderer = new THREE.WebGLRenderer({
+    renderer.current = new THREE.WebGLRenderer({
       canvas: document.getElementById('game')!
     });
-    renderer.setPixelRatio(window.devicePixelRatio);
-    renderer.setSize(width, height);
+    renderer.current.setPixelRatio(window.devicePixelRatio);
+    renderer.current.setSize(width, height);
   });
 
   useEffect(() => {
@@ -49,7 +49,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   }, []);
 
   const animateCallback = () => {
-    if (renderer === undefined) {
+    if (renderer.current === undefined) {
       console.error("Cannot find renderer!!")
       return;
     }
@@ -59,7 +59,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     setPlayerLife(player.current.life);
     enemies.current.tick(player.current.shotList, player.current.position);
     setScore(scoreRef.current += enemies.current.countShotDown);
-    renderer.render(scene.current, camera);
+    renderer.current.render(scene.current, camera);
   };
 
   animate(animateCallback);
