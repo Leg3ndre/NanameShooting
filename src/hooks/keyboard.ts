@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 
-const getKeysPressed = () => {
+const useKeyboardEffect = () => {
   const keysPressed = useRef<{ [index: string]: boolean }>({});
 
   useEffect(() => {
@@ -24,4 +24,4 @@ const getKeysPressed = () => {
   return keysPressed.current;
 }
 
-export default getKeysPressed;
+export default useKeyboardEffect;

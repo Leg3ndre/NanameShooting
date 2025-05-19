@@ -3,8 +3,8 @@ import * as CONST from '@/constants/game';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import GameDifficulty from '@/components/gameDifficulty';
-import getKeysPressed from '@/hooks/keyboard';
-import animate from '@/hooks/animate';
+import useKeyboardEffect from '@/hooks/keyboard';
+import useAnimateEffect from '@/hooks/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
@@ -23,7 +23,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const field = useRef(new Field);
   const player = useRef(new Player);
   const enemies = useRef(new EnemyManager);
-  const keysPressed = getKeysPressed();
+  const keysPressed = useKeyboardEffect();
 
   const light = useRef(new THREE.HemisphereLight(0xffffff, 0x606060, 5.0));
   const scene = useRef(new THREE.Scene);
@@ -62,7 +62,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     renderer.current.render(scene.current, camera);
   };
 
-  animate(animateCallback);
+  useAnimateEffect(animateCallback);
 
   return (
     <>

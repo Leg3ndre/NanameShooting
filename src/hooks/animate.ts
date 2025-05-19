@@ -1,18 +1,17 @@
 import * as CONST from '@/constants/game';
 import { useCallback, useEffect, useRef } from 'react';
 
-const animate = (callback: () => void) => {
+const useAnimateEffect = (callback: () => void) => {
   const frameIdRef = useRef(0);
-  const FPS = CONST.FPS;
-  let prevTime = 0;
+  const prevTime = useRef(0);
 
   const tick = useCallback(() => {
     frameIdRef.current = requestAnimationFrame(tick);
 
     const currentTime = Date.now();
-    if (currentTime - prevTime < 1000.0 / FPS) return;
+    if (currentTime - prevTime.current < 1000.0 / CONST.FPS) return;
 
-    prevTime = currentTime;
+    prevTime.current = currentTime;
     callback();
   }, [callback]);
 
@@ -22,4 +21,4 @@ const animate = (callback: () => void) => {
   }, [tick]);
 }
 
-export default animate;
+export default useAnimateEffect;

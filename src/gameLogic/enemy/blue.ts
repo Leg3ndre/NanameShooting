@@ -1,7 +1,6 @@
 import * as CONST from '@/constants/game';
 import EnemyBase from './base';
 import PlayerShots from '../playerShots';
-import { Const } from 'three/tsl';
 
 class EnemyBlue extends EnemyBase {
   constructor() {
