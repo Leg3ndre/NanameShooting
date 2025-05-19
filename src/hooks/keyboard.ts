@@ -1,10 +1,8 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 
-type Props = {
-  keysPressed: { [index: string]: boolean };
-}
+const getKeysPressed = () => {
+  const keysPressed = useRef<{ [index: string]: boolean }>({});
 
-const Keyboard = ({ keysPressed }: Props) => {
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
     document.addEventListener('keyup', handleKeyUp);
@@ -16,14 +14,14 @@ const Keyboard = ({ keysPressed }: Props) => {
   }, []);
 
   const handleKeyDown = (e: KeyboardEvent) => {
-    keysPressed[e.key] = true;
+    keysPressed.current[e.key] = true;
   }
 
   const handleKeyUp = (e: KeyboardEvent) => {
-    delete keysPressed[e.key];
+    delete keysPressed.current[e.key];
   }
 
-  return(<></>);
+  return keysPressed.current;
 }
 
-export default Keyboard;
+export default getKeysPressed;

@@ -2,8 +2,8 @@ import * as THREE from 'three';
 import * as CONST from '@/constants/game';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
-import Keyboard from '@/components/ui/keyboard';
 import GameDifficulty from '@/components/gameDifficulty';
+import getKeysPressed from '@/hooks/keyboard';
 import animate from '@/hooks/animate';
 import Field from '@/gameLogic/field';
 import Player from '@/gameLogic/player';
@@ -17,13 +17,12 @@ type Props = {
 }
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
-  const keysPressed = useRef({});
-
   const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
   const scoreRef = useRef(0);
   const field = useRef(new Field);
   const player = useRef(new Player);
   const enemies = useRef(new EnemyManager);
+  const keysPressed = getKeysPressed();
 
   const light = useRef(new THREE.HemisphereLight(0xffffff, 0x606060, 5.0));
   const scene = useRef(new THREE.Scene);
@@ -59,7 +58,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     }
 
     field.current.tick();
-    player.current.tick(keysPressed.current, enemies.current.list, enemies.current.shotList);
+    player.current.tick(keysPressed, enemies.current.list, enemies.current.shotList);
     setPlayerLife(player.current.life);
     enemies.current.tick(player.current.shotList, player.current.position);
     setScore(scoreRef.current += enemies.current.countShotDown);
@@ -70,7 +69,6 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
 
   return (
     <>
-      <Keyboard keysPressed={keysPressed.current} />
       <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
     </>
