@@ -26,8 +26,8 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const enemies = useRef(new EnemyManager);
   const keysPressed = useKeyboardEffect();
 
-  const light = useRef(new THREE.HemisphereLight(0xffffff, 0x606060, 5.0));
-  const scene = useRef(new GameScene(player.current, enemies.current, difficulty));
+  const scene = useRef(new GameScene);
+  scene.current.addObejects(field.current, player.current, enemies.current);
 
   const camera = useRef(new GameCamera(width, height, difficulty));
   const renderer = useRef<THREE.WebGLRenderer | undefined>(undefined);
@@ -46,9 +46,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   }, []);
 
   useEffect(() => {
-    scene.current = new GameScene(player.current, enemies.current, difficulty);
-    scene.current.add(light.current);
-    scene.current.add(field.current.graphics);
+    scene.current.changeDifficulty(player.current, enemies.current, difficulty);
   }, [difficulty]);
 
   useEffect(() => {
