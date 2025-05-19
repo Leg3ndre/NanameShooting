@@ -8,10 +8,10 @@ class GameCamera extends THREE.PerspectiveCamera{
     this.lookAt(new THREE.Vector3(0, 0, 0));
     if (difficulty != CONST.DIFFICULTY_HARD) return;
 
-    this.fov = 20;
-    this.far = 6000;
+    this.fov = 10;
+    this.far = 10000;
     this.updateProjectionMatrix();
-    this.position.set(0, -2500, 2500);
+    this.position.set(0, -5000, 5000);
   }
 }
 
