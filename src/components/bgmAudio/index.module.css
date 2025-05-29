@@ -1,0 +1,12 @@
+.bgm{
+  width: 640px;
+}
+
+.bgmDesc{
+  display: block;
+  float: right;
+}
+
+.composer{
+  color: #808080
+}

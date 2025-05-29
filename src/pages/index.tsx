@@ -3,6 +3,7 @@ import { useState } from 'react';
 import * as CONST from '@/constants/game';
 import GameDesc from '@/components/gameDesc';
 import GameCanvas from '@/components/gameCanvas';
+import BgmAudio from '@/components/bgmAudio';
 
 const Home = () => {
   const [playerLife, setPlayerLine] = useState(CONST.INITIAL_PLAYER_LIFE);
@@ -21,6 +22,7 @@ const Home = () => {
         setPlayerLife={setPlayerLine}
         setScore={setScore}
       />
+      <BgmAudio />
       <GameDesc />
     </>
   );
