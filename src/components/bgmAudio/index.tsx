@@ -26,7 +26,7 @@ const BgmAudio = () => {
 
   return(
     <div className={styles.bgm}>
-      <audio id="bgm" src="/bgm.mp3" controls autoPlay loop>
+      <audio id="bgm" src="./bgm.mp3" controls autoPlay loop>
         <p>お使いのブラウザでは再生できません</p>
       </audio>
       <span className={styles.bgmDesc}>
