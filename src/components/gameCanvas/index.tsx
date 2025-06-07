@@ -20,6 +20,7 @@ type Props = {
 
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
+  const [actualFps, setActualFps] = useState(0.0);
   const scoreRef = useRef(0);
   const field = useRef(new Field);
   const player = useRef(new Player);
@@ -68,12 +69,13 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     renderer.current.render(scene.current, camera.current);
   };
 
-  useAnimateEffect(animateCallback);
+  useAnimateEffect(animateCallback, setActualFps);
 
   return (
     <>
       <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
+      <span className={styles.fps}>{actualFps}</span>
     </>
   );
 }
