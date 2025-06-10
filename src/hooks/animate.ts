@@ -14,7 +14,7 @@ const useAnimateEffect = (callback: () => void, setActualFps: (actualFps: number
     frameIdRef.current = requestAnimationFrame(tick);
 
     const currentTime = Date.now();
-    if (currentTime - prevTime.current < 1000.0 / CONST.FPS) return;
+    if (currentTime - prevTime.current + 1.0 < 1000.0 / CONST.FPS) return;
 
     prevTime.current = currentTime;
     callback();
