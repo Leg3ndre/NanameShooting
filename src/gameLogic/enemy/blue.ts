@@ -6,7 +6,7 @@ class EnemyBlue extends EnemyBase {
   constructor() {
     super(0x5050f0);
     this.SHOT_COLOR = 0xc0d0ff;
-    // this.SHOOT_INTERVAL = CONST.FPS / 10;
+    // this.SHOOT_PER_SEC = 8;
     // this.SHOOT_SPEED = 240.0 / CONST.FPS;
   }
 

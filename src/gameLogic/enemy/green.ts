@@ -7,16 +7,16 @@ class EnemyGreen extends EnemyBase {
   constructor() {
     super(0x00e000);
     this.SHOT_COLOR = 0xd0ffd0;
-    this.SHOOT_PER_SEC = 15;
-    this.SHOOT_SPEED = 60.0 / CONST.FPS;
+    this.SHOOT_PER_SEC = 5;
+    this.SHOOT_SPEED = 120.0 / CONST.FPS;
   }
 
   protected buildNewShot() {
     const theta = this.count * 0.6 / CONST.FPS;
     const shotVelocity = new THREE.Vector3(
       -0.5,
-      Math.sin(theta * 5) * Math.cos(theta),
-      Math.sin(theta * 5) * Math.sin(theta),
+      2.0 * Math.sin(theta * 5) * Math.cos(theta),
+      2.0 * Math.sin(theta * 5) * Math.sin(theta),
     );
     shotVelocity.normalize().multiplyScalar(this.SHOOT_SPEED);
     shotVelocity.add(this.velocity);

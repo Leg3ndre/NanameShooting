@@ -5,7 +5,7 @@ import EnemyGraphics from '@/gameLogic/graphics/enemy';
 import PlayerShots from '@/gameLogic/playerShots';
 
 const MAX_X = CONST.SIGHT_RANGE;
-const MIN_X = -CONST.SIGHT_RANGE * 1.5;
+const MIN_X = -CONST.SIGHT_RANGE;
 const MAX_Y = CONST.WIDTH;
 const MAX_Z = CONST.HEIGHT;
 const PERIOD_BEFORE_DEAD = CONST.FPS / 2;
@@ -36,10 +36,11 @@ class EnemyBase implements IEnemy {
   isShotDown = false;
 
   protected SHOT_COLOR = 0xe0e0e0;
-  protected SHOOT_PER_SEC = 10;
+  protected SHOOT_PER_SEC = 8;
   protected SHOOT_SPEED = 240.0 / CONST.FPS;
 
   protected count = 0;
+  protected countForShoot = 0.0;
   protected countBeforeDead = 0;
   protected builder;
 
@@ -87,8 +88,11 @@ class EnemyBase implements IEnemy {
 
   shoot(playerPosition?: THREE.Vector3): Shot | null {
     if (!this.isAlive || this.isShotDown) return null;
-    if ((this.count * this.SHOOT_PER_SEC) % CONST.FPS != 0) return null;
 
+    this.countForShoot += 1.0;
+    if (this.countForShoot < CONST.FPS / this.SHOOT_PER_SEC) return null;
+
+    this.countForShoot -= CONST.FPS / this.SHOOT_PER_SEC;
     return this.buildNewShot(playerPosition);
   }
 

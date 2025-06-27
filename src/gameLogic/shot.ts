@@ -3,11 +3,11 @@ import * as CONST from '@/constants/game';
 import ShotGraphics from './graphics/shot';
 
 const MAX_X = CONST.SIGHT_RANGE;
-const MIN_X = -CONST.SIGHT_RANGE * 1.2;
-const MAX_Y = CONST.WIDTH * 2;
-const MIN_Y = -CONST.WIDTH * 2;
-const MAX_Z = CONST.HEIGHT * 2;
-const MIN_Z = -CONST.HEIGHT * 2;
+const MIN_X = -CONST.SIGHT_RANGE;
+const MAX_Y = CONST.WIDTH * 1.2;
+const MIN_Y = -CONST.WIDTH * 1.2;
+const MAX_Z = CONST.HEIGHT * 1.2;
+const MIN_Z = -CONST.HEIGHT * 1.2;
 
 class Shot {
   graphics;
