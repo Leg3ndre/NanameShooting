@@ -10,6 +10,7 @@ import Player from '@/gameLogic/player';
 import EnemyManager from '@/gameLogic/enemyManager';
 import GameCamera from '@/gameLogic/camera';
 import GameScene from '@/gameLogic/scene';
+import GameOver from '../gameOver';
 
 type Props = {
   width: number;
@@ -73,7 +74,10 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
 
   return (
     <>
-      <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
+      <div>
+        <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
+        <GameOver />
+      </div>
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
       <span className={styles.fps}>{actualFps}</span>
     </>
