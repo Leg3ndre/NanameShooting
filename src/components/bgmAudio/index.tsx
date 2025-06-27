@@ -2,6 +2,8 @@ import { useEffect } from 'react';
 import styles from './index.module.css';
 
 const BgmAudio = () => {
+  const INITIAL_VOLUME = 0.1;
+
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
 
@@ -18,6 +20,7 @@ const BgmAudio = () => {
     ) return;
 
     const audioElm = document.getElementById('bgm') as HTMLAudioElement;
+    audioElm.volume = INITIAL_VOLUME;
     audioElm.play();
   }
 
