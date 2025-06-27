@@ -1,11 +1,11 @@
 .gameOver {
   position: absolute;
   left: 45%;
-  top: 40%;
+  top: 36%;
   transform: translate(-50%, -50%);
   color: #fff;
   text-align: center;
-  display: none;
+  display: block;
 }
 
 .gameOverHeader {
@@ -13,5 +13,22 @@
 }
 
 .gameOverScore {
-  font-size: 20px;
+  font-size: 28px;
+  color: yellow;
+}
+
+.tweetButton {
+  background-color: black;
+  color: white;
+  font-size: 9pt;
+  border-radius: 15pt;
+  border-color: white;
+  margin: 2pt;
+  padding: 3pt;
+  padding-left: 12pt;
+  padding-right: 12pt;
+}
+
+.tweetButton > .twitterStr {
+  font-size: 12pt;
 }
