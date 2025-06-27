@@ -80,7 +80,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
 
   return (
     <>
-      <div>
+      <div className={styles.gameContainer}>
         <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
         <GameOver playerLife={player.current.life} score={scoreRef.current} />
       </div>

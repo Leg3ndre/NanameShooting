@@ -1,11 +1,11 @@
 .gameOver {
   position: absolute;
-  left: 45%;
-  top: 36%;
-  transform: translate(-50%, -50%);
+  top: 16%;
+  width: 100%;
+  height: 100%;
   color: #fff;
   text-align: center;
-  display: block;
+  display: none;
 }
 
 .gameOverHeader {
