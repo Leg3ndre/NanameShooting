@@ -1,17 +1,20 @@
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 
 type Props = {
   playerLife: number;
   score: number;
+  setOnGame: (onGame: boolean) => void;
 }
 
-const GameOver = ({ playerLife, score }: Props) => {
+const GameOver = ({ playerLife, score, setOnGame }: Props) => {
+    const elmRef = useRef<HTMLDivElement | null>(null);
   useEffect(() => {
     if (playerLife > 0) return;
+    if (elmRef.current == null) return;
 
-    const elm = document.getElementById('gameOver')!;
-    elm.style.display = "block";
+    setOnGame(false);
+    elmRef.current.style.display = "block";
   }, [playerLife]);
 
   const tweetResult = () => {
@@ -22,7 +25,7 @@ const GameOver = ({ playerLife, score }: Props) => {
   }
 
   return (
-    <div id="gameOver" className={styles.gameOver}>
+    <div id="gameOver" className={styles.gameOver} ref={elmRef}>
       <div className={styles.gameOverHeader}>GAME OVER</div>
       <div className={styles.gameOverScore}>KILL SCORE: {score}</div>
       <button className={styles.tweetButton} onClick={tweetResult}>

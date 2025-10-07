@@ -22,6 +22,7 @@ type Props = {
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
   const [actualFps, setActualFps] = useState(0.0);
+  const [onGame, setOnGame] = useState(true);
   const scoreRef = useRef(0);
   const field = useRef(new Field);
   const player = useRef(new Player);
@@ -55,10 +56,6 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     camera.current = new GameCamera(width, height, difficulty);
   }, [difficulty]);
 
-  const isPlayerAlive = () => {
-    return player.current.life > 0;
-  }
-
   const animateCallback = () => {
     if (renderer.current === undefined) {
       console.error("Cannot find renderer!!")
@@ -66,12 +63,12 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     }
 
     field.current.tick();
-    if (isPlayerAlive()) {
+    if (onGame) {
       player.current.tick(keysPressed, enemies.current.list, enemies.current.shotList);
       setPlayerLife(player.current.life);
     }
     enemies.current.tick(player.current.shotList, player.current.position);
-    if (isPlayerAlive()) setScore(scoreRef.current += enemies.current.countShotDown);
+    if (onGame) setScore(scoreRef.current += enemies.current.countShotDown);
 
     renderer.current.render(scene.current, camera.current);
   };
@@ -82,7 +79,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     <>
       <div className={styles.gameContainer}>
         <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
-        <GameOver playerLife={player.current.life} score={scoreRef.current} />
+        <GameOver playerLife={player.current.life} score={scoreRef.current} setOnGame={setOnGame} />
       </div>
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
       <span className={styles.fps}>{actualFps}</span>
