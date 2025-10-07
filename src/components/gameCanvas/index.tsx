@@ -11,6 +11,7 @@ import EnemyManager from '@/gameLogic/enemyManager';
 import GameCamera from '@/gameLogic/camera';
 import GameScene from '@/gameLogic/scene';
 import GameOver from '../gameOver';
+import GamePrepare from '../gamePrepare';
 
 type Props = {
   width: number;
@@ -22,7 +23,7 @@ type Props = {
 const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
   const [difficulty, setDifficulty] = useState(CONST.DIFFICULTY_NORMAL);
   const [actualFps, setActualFps] = useState(0.0);
-  const [onGame, setOnGame] = useState(true);
+  const [onGame, setOnGame] = useState(false);
   const scoreRef = useRef(0);
   const field = useRef(new Field);
   const player = useRef(new Player);
@@ -80,6 +81,7 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       <div className={styles.gameContainer}>
         <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
         <GameOver playerLife={player.current.life} score={scoreRef.current} setOnGame={setOnGame} />
+        <GamePrepare setOnGame={setOnGame} />
       </div>
       <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
       <span className={styles.fps}>{actualFps}</span>
