@@ -69,7 +69,9 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
       player.current.tick(keysPressed, enemies.current.list, enemies.current.shotList);
       setPlayerLife(player.current.life);
     }
-    enemies.current.tick(player.current.shotList, player.current.position);
+    if (onGame || player.current.life <= 0) {
+      enemies.current.tick(player.current.shotList, player.current.position);
+    }
     if (onGame) setScore(scoreRef.current += enemies.current.countShotDown);
 
     renderer.current.render(scene.current, camera.current);
