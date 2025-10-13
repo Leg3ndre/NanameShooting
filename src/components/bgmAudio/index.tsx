@@ -2,8 +2,15 @@ import { useEffect, useRef } from 'react';
 import styles from './index.module.css';
 
 const BgmAudio = () => {
-  const INITIAL_VOLUME = 0.1;
+  const INITIAL_VOLUME = 0.4;
   const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    if (audioRef.current == null) return;
+
+    const savedVolume = sessionStorage.getItem('audioVolume');
+    audioRef.current.volume = (savedVolume == null) ? INITIAL_VOLUME : parseFloat(savedVolume);
+  }, []);
 
   useEffect(() => {
     document.addEventListener('keydown', handleKeyDown);
@@ -21,7 +28,6 @@ const BgmAudio = () => {
         || e.key == 'e' || e.key == 'q' || e.key == 'x' || e.key == 'z')
     ) return;
 
-    audioRef.current.volume = INITIAL_VOLUME;
     audioRef.current.play();
   }
 

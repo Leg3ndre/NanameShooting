@@ -3,6 +3,7 @@ import { useState } from 'react';
 import * as CONST from '@/constants/game';
 import GameDesc from '@/components/gameDesc';
 import GameCanvas from '@/components/gameCanvas';
+import RetryButton from '@/components/retryButton';
 import BgmAudio from '@/components/bgmAudio';
 import GameVersion from '@/components/gameVersion';
 
@@ -23,6 +24,7 @@ const Home = () => {
         setPlayerLife={setPlayerLine}
         setScore={setScore}
       />
+      <RetryButton />
       <BgmAudio />
       <GameDesc />
       <GameVersion />
