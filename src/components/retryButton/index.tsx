@@ -6,7 +6,9 @@ const RetryButton = () => {
   }
 
   return (
-    <a href="#" onClick={() => reload()}>Retry</a>
+    <div>
+      <a href="#" onClick={() => reload()}>Retry</a>
+    </div>
   );
 }
 

@@ -3,6 +3,7 @@ import * as CONST from '@/constants/game';
 import { useEffect, useRef, useState } from 'react';
 import styles from './index.module.css';
 import GameDifficulty from '@/components/gameDifficulty';
+import RetryButton from '@/components/retryButton';
 import useKeyboardEffect from '@/hooks/keyboard';
 import useAnimateEffect from '@/hooks/animate';
 import Field from '@/gameLogic/field';
@@ -83,7 +84,10 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
         <GameOver playerLife={player.current.life} score={scoreRef.current} setOnGame={setOnGame} />
         <GamePrepare setOnGame={setOnGame} />
       </div>
-      <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
+      <div className={styles.sideContainer}>
+        <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
+        <RetryButton />
+      </div>
       <span className={styles.fps}>{actualFps}</span>
     </>
   );

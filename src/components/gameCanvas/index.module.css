@@ -7,6 +7,10 @@
   background-color: black;
 }
 
+.sideContainer {
+  display: inline-block;
+}
+
 .fps {
   background-color: white;
   color: white;
