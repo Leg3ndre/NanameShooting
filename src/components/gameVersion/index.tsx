@@ -1,7 +1,7 @@
 import styles from './index.module.css';
 
 const GameVersion = () => {
-  const VERSION = 'v1.3.0';
+  const VERSION = 'v1.3.1';
 
   return (
     <div className={styles.version}>
