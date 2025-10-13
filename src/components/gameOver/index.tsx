@@ -18,7 +18,7 @@ const GameOver = ({ playerLife, score, setOnGame }: Props) => {
   }, [playerLife]);
 
   const tweetResult = () => {
-    const tweetMessage = `記録は${score}点でした！`;
+    const tweetMessage = `[NanameShooting] 記録は${score}点でした！`;
     const currentUrl = location.href;
     const hashTags = 'NanameShooting,MaxenceStudio';
     window.open(`https://x.com/intent/post?text=${tweetMessage}&url=${currentUrl}&hashtags=${hashTags}`);
