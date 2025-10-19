@@ -83,8 +83,8 @@ const GameCanvas = ({ width, height, setPlayerLife, setScore }: Props) => {
     <>
       <div className={styles.gameContainer}>
         <canvas id="game" width={width} height={height} className={styles.gameCanvas} />
-        <GameOver playerLife={player.current.life} score={scoreRef.current} setOnGame={setOnGame} />
         <GamePrepare setOnGame={setOnGame} />
+        <GameOver playerLife={player.current.life} score={scoreRef.current} setOnGame={setOnGame} />
       </div>
       <div className={styles.sideContainer}>
         <GameDifficulty difficulty={difficulty} setDifficulty={setDifficulty} />
